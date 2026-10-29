@@ -1,0 +1,2667 @@
+{
+ "meta": {
+  "grid_res_deg": 0.25,
+  "ocean_share": 0.5745072939448836,
+  "lithoref18_points": 16200,
+  "winterc_nodes": 12232,
+  "plate_gap_cells": 12,
+  "cities_page": 6285,
+  "retrieved": "29 October 2026"
+ },
+ "models": {
+  "lithoref18": {
+   "all": {
+    "mean": 104.65571270190313,
+    "median": 103.53466033935547,
+    "p10": 54.87690734863281,
+    "p25": 73.70122528076172,
+    "p75": 120.82401275634766,
+    "p90": 167.8309326171875,
+    "share_over_200": 0.026757553227105147,
+    "share_over_150": 0.14428296478601726,
+    "share_under_100": 0.46364669995788715,
+    "share_under_50": 0.05404972855713765
+   },
+   "continent": {
+    "mean": 119.12035670032961,
+    "median": 115.85733032226562,
+    "p10": 54.519832611083984,
+    "p25": 68.87535858154297,
+    "p75": 165.3800506591797,
+    "p90": 192.04373168945312,
+    "share_over_200": 0.06288604445228514,
+    "share_over_150": 0.33733811104134165,
+    "share_under_100": 0.4238980574494881,
+    "share_under_50": 0.04413136459391319
+   },
+   "ocean": {
+    "mean": 93.94288001573564,
+    "median": 100.46711730957031,
+    "p10": 55.20616912841797,
+    "p25": 77.37911224365234,
+    "p75": 113.25906372070312,
+    "p90": 119.92207336425781,
+    "share_over_200": 0.0,
+    "share_over_150": 0.0013020880176800472,
+    "share_under_100": 0.4930854166481206,
+    "share_under_50": 0.06139548650804851
+   },
+   "area_over_200_mkm2": 13.648225174549522,
+   "max": {
+    "km": 246.78547,
+    "lat": 77.0,
+    "lon": -41.0
+   },
+   "min": {
+    "km": 18.62358,
+    "lat": -55.0,
+    "lon": -31.0
+   }
+  },
+  "winterc": {
+   "all": {
+    "mean": 104.74840061554451,
+    "median": 87.29739379882812,
+    "p10": 72.04589080810547,
+    "p25": 76.23371124267578,
+    "p75": 112.81173706054688,
+    "p90": 168.7328643798828,
+    "share_over_200": 0.055240993181854325,
+    "share_over_150": 0.13562925131231704,
+    "share_under_100": 0.6597442052749406,
+    "share_under_50": 1.9597245739168386e-05
+   },
+   "continent": {
+    "mean": 130.66975543282237,
+    "median": 115.21090698242188,
+    "p10": 73.60102844238281,
+    "p25": 80.7051010131836,
+    "p75": 165.3699951171875,
+    "p90": 214.33721923828125,
+    "share_over_200": 0.12982829645662283,
+    "share_over_150": 0.31849080428669496,
+    "share_under_100": 0.4050798793884505,
+    "share_under_50": 4.605777128557838e-05
+   },
+   "ocean": {
+    "mean": 85.55047654727933,
+    "median": 81.99950408935547,
+    "p10": 71.47473907470703,
+    "p25": 74.8357162475586,
+    "p75": 93.5150375366211,
+    "p90": 105.21149444580078,
+    "share_over_200": 0.0,
+    "share_over_150": 0.00019797336587278245,
+    "share_under_100": 0.848354192126631,
+    "share_under_50": 0.0
+   },
+   "area_over_200_mkm2": 28.176773392268434,
+   "max": {
+    "km": 300.0,
+    "n_at_max": 80
+   },
+   "min": {
+    "km": 45.0,
+    "lat": -5.8,
+    "lon": 130.8,
+    "n_at_min": 1
+   }
+  },
+  "average": {
+   "all": {
+    "mean": 104.70205665872382,
+    "median": 96.7026481628418,
+    "p10": 64.58996391296387,
+    "p25": 76.70282363891602,
+    "p75": 114.88294982910156,
+    "p90": 166.5935821533203,
+    "share_over_200": 0.04123484256888593,
+    "share_over_150": 0.13866271841695607,
+    "share_under_100": 0.5555372887552522,
+    "share_under_50": 0.00268365275085408
+   },
+   "continent": {
+    "mean": 124.89505606657596,
+    "median": 116.64934158325195,
+    "p10": 65.46480941772461,
+    "p25": 76.91271018981934,
+    "p75": 163.7316551208496,
+    "p90": 198.8545913696289,
+    "share_over_200": 0.09691080947353432,
+    "share_over_150": 0.3258427956156394,
+    "share_under_100": 0.40020516896936864,
+    "share_under_50": 0.0004565123319168
+   },
+   "ocean": {
+    "mean": 89.7466782815075,
+    "median": 92.26359176635742,
+    "p10": 63.80707359313965,
+    "p25": 76.58867263793945,
+    "p75": 103.15478134155273,
+    "p90": 110.97966384887695,
+    "share_over_200": 0.0,
+    "share_over_150": 3.304668555740974e-05,
+    "share_under_100": 0.6705796645119535,
+    "share_under_50": 0.004333121806523306
+   },
+   "area_over_200_mkm2": 21.03265614911165
+  }
+ },
+ "agree": {
+  "r_all": 0.744985095851452,
+  "r_continent": 0.7490903381105085,
+  "r_ocean": 0.6560398697339677,
+  "median_absdiff": 18.748126983642578,
+  "median_absdiff_continent": 23.67290496826172,
+  "median_absdiff_ocean": 16.153640747070312,
+  "share_diff_over_50": 0.07672366371925599,
+  "mean_diff_w_minus_l": 0.0926879136413954,
+  "both_over_200_mkm2": 7.831862288699086,
+  "either_over_200_mkm2": 33.99313627811887
+ },
+ "ocean_age": [
+  {
+   "age_from": 0,
+   "age_to": 2,
+   "area_share_of_ocean": 0.01958697232185048,
+   "lithoref18_median": 41.95684814453125,
+   "winterc_median": 70.0671157836914,
+   "lithoref18_p25": 34.20616912841797,
+   "lithoref18_p75": 52.21445846557617,
+   "winterc_p25": 67.70060729980469,
+   "winterc_p75": 72.69581604003906
+  },
+  {
+   "age_from": 2,
+   "age_to": 5,
+   "area_share_of_ocean": 0.030247138977253275,
+   "lithoref18_median": 45.17460250854492,
+   "winterc_median": 70.61618041992188,
+   "lithoref18_p25": 38.855838775634766,
+   "lithoref18_p75": 53.38264846801758,
+   "winterc_p25": 68.97745513916016,
+   "winterc_p75": 72.96601104736328
+  },
+  {
+   "age_from": 5,
+   "age_to": 10,
+   "area_share_of_ocean": 0.05219773759569662,
+   "lithoref18_median": 51.257957458496094,
+   "winterc_median": 71.74004364013672,
+   "lithoref18_p25": 46.42770767211914,
+   "lithoref18_p75": 56.08191680908203,
+   "winterc_p25": 69.81863403320312,
+   "winterc_p75": 73.6977767944336
+  },
+  {
+   "age_from": 10,
+   "age_to": 20,
+   "area_share_of_ocean": 0.10564471975081437,
+   "lithoref18_median": 62.55213928222656,
+   "winterc_median": 73.11383056640625,
+   "lithoref18_p25": 56.210113525390625,
+   "lithoref18_p75": 69.7657699584961,
+   "winterc_p25": 71.47298431396484,
+   "winterc_p75": 75.40740966796875
+  },
+  {
+   "age_from": 20,
+   "age_to": 30,
+   "area_share_of_ocean": 0.0999477035629963,
+   "lithoref18_median": 78.87435913085938,
+   "winterc_median": 74.9632568359375,
+   "lithoref18_p25": 74.13947296142578,
+   "lithoref18_p75": 83.12987518310547,
+   "winterc_p25": 72.90694427490234,
+   "winterc_p75": 78.12715148925781
+  },
+  {
+   "age_from": 30,
+   "age_to": 40,
+   "area_share_of_ocean": 0.08675974064314103,
+   "lithoref18_median": 88.77615356445312,
+   "winterc_median": 77.19791412353516,
+   "lithoref18_p25": 85.15728759765625,
+   "lithoref18_p75": 92.56403350830078,
+   "winterc_p25": 74.70869445800781,
+   "winterc_p75": 81.7188720703125
+  },
+  {
+   "age_from": 40,
+   "age_to": 50,
+   "area_share_of_ocean": 0.07334675768629698,
+   "lithoref18_median": 96.27190399169922,
+   "winterc_median": 80.36048126220703,
+   "lithoref18_p25": 92.76565551757812,
+   "lithoref18_p75": 100.26082611083984,
+   "winterc_p25": 76.5326156616211,
+   "winterc_p75": 86.391357421875
+  },
+  {
+   "age_from": 50,
+   "age_to": 60,
+   "area_share_of_ocean": 0.06400910006828286,
+   "lithoref18_median": 100.82400512695312,
+   "winterc_median": 84.24903106689453,
+   "lithoref18_p25": 97.19117736816406,
+   "lithoref18_p75": 105.47371673583984,
+   "winterc_p25": 79.0445785522461,
+   "winterc_p75": 90.13513946533203
+  },
+  {
+   "age_from": 60,
+   "age_to": 80,
+   "area_share_of_ocean": 0.1327726389749379,
+   "lithoref18_median": 107.2388916015625,
+   "winterc_median": 87.51624298095703,
+   "lithoref18_p25": 103.45697021484375,
+   "lithoref18_p75": 111.3134536743164,
+   "winterc_p25": 81.41526794433594,
+   "winterc_p75": 95.66173553466797
+  },
+  {
+   "age_from": 80,
+   "age_to": 100,
+   "area_share_of_ocean": 0.09031518675952457,
+   "lithoref18_median": 112.9372787475586,
+   "winterc_median": 92.16211700439453,
+   "lithoref18_p25": 109.55109405517578,
+   "lithoref18_p75": 116.60114288330078,
+   "winterc_p25": 84.35935974121094,
+   "winterc_p75": 100.11065673828125
+  },
+  {
+   "age_from": 100,
+   "age_to": 120,
+   "area_share_of_ocean": 0.09062346319175485,
+   "lithoref18_median": 115.28695678710938,
+   "winterc_median": 96.39359283447266,
+   "lithoref18_p25": 111.90251922607422,
+   "lithoref18_p75": 119.56116485595703,
+   "winterc_p25": 87.29851531982422,
+   "winterc_p75": 106.39015197753906
+  },
+  {
+   "age_from": 120,
+   "age_to": 140,
+   "area_share_of_ocean": 0.08002807807407392,
+   "lithoref18_median": 117.67450714111328,
+   "winterc_median": 96.3735122680664,
+   "lithoref18_p25": 113.94776153564453,
+   "lithoref18_p75": 122.31005859375,
+   "winterc_p25": 87.71467590332031,
+   "winterc_p75": 107.44282531738281
+  },
+  {
+   "age_from": 140,
+   "age_to": 160,
+   "area_share_of_ocean": 0.04864150857965782,
+   "lithoref18_median": 116.88142395019531,
+   "winterc_median": 97.33616638183594,
+   "lithoref18_p25": 112.48014831542969,
+   "lithoref18_p75": 122.62406158447266,
+   "winterc_p25": 88.72710418701172,
+   "winterc_p75": 108.84156036376953
+  },
+  {
+   "age_from": 160,
+   "age_to": 200,
+   "area_share_of_ocean": 0.02524204995297593,
+   "lithoref18_median": 118.74983215332031,
+   "winterc_median": 100.73194885253906,
+   "lithoref18_p25": 112.8737564086914,
+   "lithoref18_p75": 123.3634033203125,
+   "winterc_p25": 92.01715087890625,
+   "winterc_p75": 116.2074203491211
+  }
+ ],
+ "ocean_fit": {
+  "lithoref18": {
+   "c_km_per_sqrt_myr": 14.174331252672086,
+   "r_sqrt_age_all_ocean": 0.8775251629491294
+  },
+  "winterc": {
+   "c_km_per_sqrt_myr": 12.825539385736239,
+   "r_sqrt_age_all_ocean": 0.7088547437005499
+  },
+  "halfspace_c": 13.032867153470105
+ },
+ "ridge": {
+  "young_cells_share_of_ocean": 0.01958697232185048,
+  "lithoref18_median_young": 41.95684814453125,
+  "winterc_median_young": 70.0671157836914,
+  "lithoref18_median_old": 118.07295227050781,
+  "winterc_median_old": 99.15904235839844,
+  "age_max_myr": 338.6839904785156,
+  "oldest_lat": 34.625,
+  "oldest": {
+   "lat": 34.625,
+   "lon": 31.375,
+   "age": 338.6839904785156
+  }
+ },
+ "countries": {
+  "n_big": 154,
+  "thickest": [
+   {
+    "iso": "LTU",
+    "country": "Lithuania",
+    "area_km2_grid": 61517,
+    "cells": 140,
+    "lithoref18_mean": 199.29539586225448,
+    "winterc_mean": 297.66038403293976,
+    "average_mean": 248.4778899475971,
+    "average_max": 256.97037506103516,
+    "average_min": 231.7779083251953,
+    "crust_mean": 42.86253387180699
+   },
+   {
+    "iso": "BLR",
+    "country": "Belarus",
+    "area_km2_grid": 208064,
+    "cells": 453,
+    "lithoref18_mean": 183.13358861997287,
+    "winterc_mean": 289.0762744083694,
+    "average_mean": 236.10493151417114,
+    "average_max": 252.71238708496094,
+    "average_min": 224.11432647705078,
+    "crust_mean": 42.416427432366035
+   },
+   {
+    "iso": "LVA",
+    "country": "Latvia",
+    "area_km2_grid": 65507,
+    "cells": 155,
+    "lithoref18_mean": 167.09261374680653,
+    "winterc_mean": 296.4584361296259,
+    "average_mean": 231.7755249382162,
+    "average_max": 243.33563232421875,
+    "average_min": 207.98216247558594,
+    "crust_mean": 42.61164953894388
+   },
+   {
+    "iso": "FIN",
+    "country": "Finland",
+    "area_km2_grid": 330254,
+    "cells": 994,
+    "lithoref18_mean": 162.75293329146757,
+    "winterc_mean": 276.32886228372377,
+    "average_mean": 219.54089778759567,
+    "average_max": 250.02074432373047,
+    "average_min": 142.33885955810547,
+    "crust_mean": 44.676311865135375
+   },
+   {
+    "iso": "EST",
+    "country": "Estonia",
+    "area_km2_grid": 45804,
+    "cells": 114,
+    "lithoref18_mean": 136.02517732971248,
+    "winterc_mean": 299.4165189108183,
+    "average_mean": 217.72084812026534,
+    "average_max": 239.13197326660156,
+    "average_min": 187.92249298095703,
+    "crust_mean": 40.484812246956764
+   },
+   {
+    "iso": "COG",
+    "country": "Republic of the Congo",
+    "area_km2_grid": 348197,
+    "cells": 451,
+    "lithoref18_mean": 204.70907747613919,
+    "winterc_mean": 201.01516309004666,
+    "average_mean": 202.86212028309296,
+    "average_max": 216.12948608398438,
+    "average_min": 165.90741729736328,
+    "crust_mean": 34.49525427523426
+   },
+   {
+    "iso": "CAN",
+    "country": "Canada",
+    "area_km2_grid": 9849081,
+    "cells": 26890,
+    "lithoref18_mean": 175.66741552671283,
+    "winterc_mean": 202.90998784793024,
+    "average_mean": 189.28870168732155,
+    "average_max": 259.4574890136719,
+    "average_min": 63.21857261657715,
+    "crust_mean": 37.15681356966383
+   },
+   {
+    "iso": "UKR",
+    "country": "Ukraine",
+    "area_km2_grid": 567908,
+    "cells": 1124,
+    "lithoref18_mean": 164.82982471383673,
+    "winterc_mean": 211.5094247520334,
+    "average_mean": 188.16962473293506,
+    "average_max": 242.9171905517578,
+    "average_min": 113.89616012573242,
+    "crust_mean": 40.32922115226696
+   },
+   {
+    "iso": "MLI",
+    "country": "Mali",
+    "area_km2_grid": 1259043,
+    "cells": 1710,
+    "lithoref18_mean": 186.80616187744914,
+    "winterc_mean": 188.26115705294842,
+    "average_mean": 187.53365946519878,
+    "average_max": 228.8898696899414,
+    "average_min": 118.69895935058594,
+    "crust_mean": 35.72904055073057
+   },
+   {
+    "iso": "MRT",
+    "country": "Mauritania",
+    "area_km2_grid": 1030234,
+    "cells": 1423,
+    "lithoref18_mean": 174.32999378027517,
+    "winterc_mean": 199.73819857942362,
+    "average_mean": 187.0340961798494,
+    "average_max": 229.75406646728516,
+    "average_min": 104.67606735229492,
+    "crust_mean": 33.712820510519364
+   }
+  ],
+  "thinnest": [
+   {
+    "iso": "DJI",
+    "country": "Djibouti",
+    "area_km2_grid": 21941,
+    "cells": 29,
+    "lithoref18_mean": 39.93456189408421,
+    "winterc_mean": 66.07445322801371,
+    "average_mean": 53.00450756104895,
+    "average_max": 55.743818283081055,
+    "average_min": 51.61579513549805,
+    "crust_mean": 27.42614834837905
+   },
+   {
+    "iso": "SOL",
+    "country": "Somaliland",
+    "area_km2_grid": 171359,
+    "cells": 225,
+    "lithoref18_mean": 51.890465366315304,
+    "winterc_mean": 73.29022356247025,
+    "average_mean": 62.59034446439277,
+    "average_max": 72.8320541381836,
+    "average_min": 55.97504425048828,
+    "crust_mean": 30.173521734044353
+   },
+   {
+    "iso": "YEM",
+    "country": "Yemen",
+    "area_km2_grid": 455431,
+    "cells": 613,
+    "lithoref18_mean": 52.44062448333598,
+    "winterc_mean": 72.89273759834514,
+    "average_mean": 62.66668104084056,
+    "average_max": 81.66868209838867,
+    "average_min": 52.98044204711914,
+    "crust_mean": 30.093908080179514
+   },
+   {
+    "iso": "KOR",
+    "country": "South Korea",
+    "area_km2_grid": 95799,
+    "cells": 154,
+    "lithoref18_mean": 55.04759474260201,
+    "winterc_mean": 73.4465886660043,
+    "average_mean": 64.24709170430316,
+    "average_max": 70.14483642578125,
+    "average_min": 56.99453353881836,
+    "crust_mean": 31.57484467494615
+   },
+   {
+    "iso": "JOR",
+    "country": "Jordan",
+    "area_km2_grid": 86514,
+    "cells": 131,
+    "lithoref18_mean": 57.59598057325805,
+    "winterc_mean": 74.5897757033266,
+    "average_mean": 66.09287813829232,
+    "average_max": 76.47147750854492,
+    "average_min": 62.12554359436035,
+    "crust_mean": 36.608600891464484
+   },
+   {
+    "iso": "VNM",
+    "country": "Vietnam",
+    "area_km2_grid": 330651,
+    "cells": 448,
+    "lithoref18_mean": 58.934768961555164,
+    "winterc_mean": 75.18600234208287,
+    "average_mean": 67.06038565181902,
+    "average_max": 79.95219421386719,
+    "average_min": 60.78559875488281,
+    "crust_mean": 33.68096502737691
+   },
+   {
+    "iso": "MYS",
+    "country": "Malaysia",
+    "area_km2_grid": 327604,
+    "cells": 425,
+    "lithoref18_mean": 63.695539399241085,
+    "winterc_mean": 71.62042714814669,
+    "average_mean": 67.65798327369389,
+    "average_max": 102.40823745727539,
+    "average_min": 58.4002742767334,
+    "crust_mean": 29.172052458550535
+   },
+   {
+    "iso": "SYR",
+    "country": "Syria",
+    "area_km2_grid": 184765,
+    "cells": 292,
+    "lithoref18_mean": 59.51093499957782,
+    "winterc_mean": 76.92346162549543,
+    "average_mean": 68.21719831253662,
+    "average_max": 97.90143585205078,
+    "average_min": 62.62271690368652,
+    "crust_mean": 35.775522297594115
+   },
+   {
+    "iso": "ETH",
+    "country": "Ethiopia",
+    "area_km2_grid": 1130336,
+    "cells": 1481,
+    "lithoref18_mean": 62.66936887377086,
+    "winterc_mean": 73.8140951906979,
+    "average_mean": 68.24173203223438,
+    "average_max": 116.52582931518555,
+    "average_min": 50.65386390686035,
+    "crust_mean": 36.821362479368894
+   },
+   {
+    "iso": "ERI",
+    "country": "Eritrea",
+    "area_km2_grid": 122927,
+    "cells": 165,
+    "lithoref18_mean": 68.84317904919149,
+    "winterc_mean": 69.20324876970929,
+    "average_mean": 69.02321390945039,
+    "average_max": 94.49886703491211,
+    "average_min": 50.30515098571777,
+    "crust_mean": 29.761988626382294
+   }
+  ],
+  "all": [
+   {
+    "iso": "LTU",
+    "country": "Lithuania",
+    "l": 199,
+    "w": 298,
+    "a": 248,
+    "area": 61517
+   },
+   {
+    "iso": "BLR",
+    "country": "Belarus",
+    "l": 183,
+    "w": 289,
+    "a": 236,
+    "area": 208064
+   },
+   {
+    "iso": "LVA",
+    "country": "Latvia",
+    "l": 167,
+    "w": 296,
+    "a": 232,
+    "area": 65507
+   },
+   {
+    "iso": "FIN",
+    "country": "Finland",
+    "l": 163,
+    "w": 276,
+    "a": 220,
+    "area": 330254
+   },
+   {
+    "iso": "EST",
+    "country": "Estonia",
+    "l": 136,
+    "w": 299,
+    "a": 218,
+    "area": 45804
+   },
+   {
+    "iso": "COG",
+    "country": "Republic of the Congo",
+    "l": 205,
+    "w": 201,
+    "a": 203,
+    "area": 348197
+   },
+   {
+    "iso": "CAN",
+    "country": "Canada",
+    "l": 176,
+    "w": 203,
+    "a": 189,
+    "area": 9849081
+   },
+   {
+    "iso": "UKR",
+    "country": "Ukraine",
+    "l": 165,
+    "w": 212,
+    "a": 188,
+    "area": 567908
+   },
+   {
+    "iso": "MLI",
+    "country": "Mali",
+    "l": 187,
+    "w": 188,
+    "a": 188,
+    "area": 1259043
+   },
+   {
+    "iso": "MRT",
+    "country": "Mauritania",
+    "l": 174,
+    "w": 200,
+    "a": 187,
+    "area": 1030234
+   },
+   {
+    "iso": "BFA",
+    "country": "Burkina Faso",
+    "l": 203,
+    "w": 165,
+    "a": 184,
+    "area": 275550
+   },
+   {
+    "iso": "GUY",
+    "country": "Guyana",
+    "l": 189,
+    "w": 178,
+    "a": 183,
+    "area": 212426
+   },
+   {
+    "iso": "TJK",
+    "country": "Tajikistan",
+    "l": 115,
+    "w": 251,
+    "a": 183,
+    "area": 142071
+   },
+   {
+    "iso": "BWA",
+    "country": "Botswana",
+    "l": 183,
+    "w": 181,
+    "a": 182,
+    "area": 578594
+   },
+   {
+    "iso": "GAB",
+    "country": "Gabon",
+    "l": 181,
+    "w": 179,
+    "a": 180,
+    "area": 261885
+   },
+   {
+    "iso": "SUR",
+    "country": "Suriname",
+    "l": 177,
+    "w": 183,
+    "a": 180,
+    "area": 145648
+   },
+   {
+    "iso": "SWE",
+    "country": "Sweden",
+    "l": 165,
+    "w": 188,
+    "a": 177,
+    "area": 443485
+   },
+   {
+    "iso": "NPL",
+    "country": "Nepal",
+    "l": 135,
+    "w": 206,
+    "a": 171,
+    "area": 142920
+   },
+   {
+    "iso": "COD",
+    "country": "Democratic Republic of the Congo",
+    "l": 165,
+    "w": 174,
+    "a": 170,
+    "area": 2334023
+   },
+   {
+    "iso": "AUS",
+    "country": "Australia",
+    "l": 153,
+    "w": 185,
+    "a": 169,
+    "area": 7696200
+   },
+   {
+    "iso": "GHA",
+    "country": "Ghana",
+    "l": 184,
+    "w": 149,
+    "a": 167,
+    "area": 237931
+   },
+   {
+    "iso": "GRL",
+    "country": "Greenland",
+    "l": 167,
+    "w": 160,
+    "a": 164,
+    "area": 2154905
+   },
+   {
+    "iso": "POL",
+    "country": "Poland",
+    "l": 153,
+    "w": 173,
+    "a": 163,
+    "area": 316188
+   },
+   {
+    "iso": "BRA",
+    "country": "Brazil",
+    "l": 165,
+    "w": 161,
+    "a": 163,
+    "area": 8497960
+   },
+   {
+    "iso": "GIN",
+    "country": "Guinea",
+    "l": 174,
+    "w": 145,
+    "a": 160,
+    "area": 246178
+   },
+   {
+    "iso": "ZWE",
+    "country": "Zimbabwe",
+    "l": 155,
+    "w": 164,
+    "a": 159,
+    "area": 387859
+   },
+   {
+    "iso": "CIV",
+    "country": "Ivory Coast",
+    "l": 173,
+    "w": 145,
+    "a": 159,
+    "area": 323874
+   },
+   {
+    "iso": "PER",
+    "country": "Peru",
+    "l": 148,
+    "w": 169,
+    "a": 159,
+    "area": 1290881
+   },
+   {
+    "iso": "ZMB",
+    "country": "Zambia",
+    "l": 156,
+    "w": 160,
+    "a": 158,
+    "area": 750914
+   },
+   {
+    "iso": "ESH",
+    "country": "Western Sahara",
+    "l": 161,
+    "w": 154,
+    "a": 158,
+    "area": 94550
+   },
+   {
+    "iso": "MDA",
+    "country": "Moldova",
+    "l": 145,
+    "w": 170,
+    "a": 158,
+    "area": 33606
+   },
+   {
+    "iso": "IND",
+    "country": "India",
+    "l": 145,
+    "w": 160,
+    "a": 152,
+    "area": 3148018
+   },
+   {
+    "iso": "BDI",
+    "country": "Burundi",
+    "l": 173,
+    "w": 131,
+    "a": 152,
+    "area": 27000
+   },
+   {
+    "iso": "PAK",
+    "country": "Pakistan",
+    "l": 129,
+    "w": 174,
+    "a": 151,
+    "area": 871120
+   },
+   {
+    "iso": "KAZ",
+    "country": "Kazakhstan",
+    "l": 124,
+    "w": 178,
+    "a": 151,
+    "area": 2717122
+   },
+   {
+    "iso": "ZAF",
+    "country": "South Africa",
+    "l": 161,
+    "w": 141,
+    "a": 151,
+    "area": 1220526
+   },
+   {
+    "iso": "VEN",
+    "country": "Venezuela",
+    "l": 144,
+    "w": 152,
+    "a": 148,
+    "area": 910862
+   },
+   {
+    "iso": "RUS",
+    "country": "Russia",
+    "l": 130,
+    "w": 166,
+    "a": 148,
+    "area": 16860401
+   },
+   {
+    "iso": "TGO",
+    "country": "Togo",
+    "l": 146,
+    "w": 144,
+    "a": 145,
+    "area": 53479
+   },
+   {
+    "iso": "ALB",
+    "country": "Albania",
+    "l": 123,
+    "w": 168,
+    "a": 145,
+    "area": 28515
+   },
+   {
+    "iso": "BOL",
+    "country": "Bolivia",
+    "l": 123,
+    "w": 167,
+    "a": 145,
+    "area": 1091037
+   },
+   {
+    "iso": "LSO",
+    "country": "Lesotho",
+    "l": 152,
+    "w": 133,
+    "a": 143,
+    "area": 28903
+   },
+   {
+    "iso": "MWI",
+    "country": "Malawi",
+    "l": 147,
+    "w": 138,
+    "a": 142,
+    "area": 121066
+   },
+   {
+    "iso": "ARE",
+    "country": "United Arab Emirates",
+    "l": 121,
+    "w": 162,
+    "a": 141,
+    "area": 69233
+   },
+   {
+    "iso": "BTN",
+    "country": "Bhutan",
+    "l": 83,
+    "w": 195,
+    "a": 139,
+    "area": 40481
+   },
+   {
+    "iso": "COL",
+    "country": "Colombia",
+    "l": 145,
+    "w": 134,
+    "a": 139,
+    "area": 1135334
+   },
+   {
+    "iso": "GNQ",
+    "country": "Equatorial Guinea",
+    "l": 137,
+    "w": 140,
+    "a": 138,
+    "area": 26261
+   },
+   {
+    "iso": "CAF",
+    "country": "Central African Republic",
+    "l": 142,
+    "w": 133,
+    "a": 138,
+    "area": 618532
+   },
+   {
+    "iso": "KGZ",
+    "country": "Kyrgyzstan",
+    "l": 103,
+    "w": 172,
+    "a": 138,
+    "area": 198634
+   },
+   {
+    "iso": "AGO",
+    "country": "Angola",
+    "l": 126,
+    "w": 148,
+    "a": 137,
+    "area": 1256576
+   },
+   {
+    "iso": "GNB",
+    "country": "Guinea-Bissau",
+    "l": 144,
+    "w": 125,
+    "a": 134,
+    "area": 31736
+   },
+   {
+    "iso": "TZA",
+    "country": "Tanzania",
+    "l": 150,
+    "w": 118,
+    "a": 134,
+    "area": 937693
+   },
+   {
+    "iso": "MOZ",
+    "country": "Mozambique",
+    "l": 141,
+    "w": 124,
+    "a": 132,
+    "area": 792836
+   },
+   {
+    "iso": "NAM",
+    "country": "Namibia",
+    "l": 138,
+    "w": 126,
+    "a": 132,
+    "area": 820329
+   },
+   {
+    "iso": "UZB",
+    "country": "Uzbekistan",
+    "l": 106,
+    "w": 153,
+    "a": 130,
+    "area": 448443
+   },
+   {
+    "iso": "DNK",
+    "country": "Denmark",
+    "l": 154,
+    "w": 104,
+    "a": 129,
+    "area": 41065
+   },
+   {
+    "iso": "BEN",
+    "country": "Benin",
+    "l": 119,
+    "w": 136,
+    "a": 128,
+    "area": 123397
+   },
+   {
+    "iso": "BGD",
+    "country": "Bangladesh",
+    "l": 118,
+    "w": 135,
+    "a": 127,
+    "area": 137063
+   },
+   {
+    "iso": "SLE",
+    "country": "Sierra Leone",
+    "l": 124,
+    "w": 129,
+    "a": 126,
+    "area": 73355
+   },
+   {
+    "iso": "RWA",
+    "country": "Rwanda",
+    "l": 125,
+    "w": 126,
+    "a": 125,
+    "area": 23941
+   },
+   {
+    "iso": "USA",
+    "country": "United States of America",
+    "l": 118,
+    "w": 133,
+    "a": 125,
+    "area": 9434132
+   },
+   {
+    "iso": "SEN",
+    "country": "Senegal",
+    "l": 117,
+    "w": 133,
+    "a": 125,
+    "area": 196089
+   },
+   {
+    "iso": "NOR",
+    "country": "Norway",
+    "l": 109,
+    "w": 137,
+    "a": 123,
+    "area": 376451
+   },
+   {
+    "iso": "NZL",
+    "country": "New Zealand",
+    "l": 145,
+    "w": 97,
+    "a": 121,
+    "area": 264099
+   },
+   {
+    "iso": "GRC",
+    "country": "Greece",
+    "l": 126,
+    "w": 114,
+    "a": 120,
+    "area": 124673
+   },
+   {
+    "iso": "AFG",
+    "country": "Afghanistan",
+    "l": 109,
+    "w": 130,
+    "a": 120,
+    "area": 642768
+   },
+   {
+    "iso": "DZA",
+    "country": "Algeria",
+    "l": 102,
+    "w": 137,
+    "a": 119,
+    "area": 2317705
+   },
+   {
+    "iso": "UGA",
+    "country": "Uganda",
+    "l": 130,
+    "w": 108,
+    "a": 119,
+    "area": 244065
+   },
+   {
+    "iso": "CUB",
+    "country": "Cuba",
+    "l": 126,
+    "w": 108,
+    "a": 117,
+    "area": 107729
+   },
+   {
+    "iso": "LKA",
+    "country": "Sri Lanka",
+    "l": 136,
+    "w": 96,
+    "a": 116,
+    "area": 65857
+   },
+   {
+    "iso": "CHN",
+    "country": "People's Republic of China",
+    "l": 90,
+    "w": 142,
+    "a": 116,
+    "area": 9375330
+   },
+   {
+    "iso": "URY",
+    "country": "Uruguay",
+    "l": 105,
+    "w": 125,
+    "a": 115,
+    "area": 180535
+   },
+   {
+    "iso": "GBR",
+    "country": "United Kingdom",
+    "l": 116,
+    "w": 114,
+    "a": 115,
+    "area": 239645
+   },
+   {
+    "iso": "TKM",
+    "country": "Turkmenistan",
+    "l": 96,
+    "w": 131,
+    "a": 114,
+    "area": 466212
+   },
+   {
+    "iso": "NLD",
+    "country": "Netherlands",
+    "l": 119,
+    "w": 107,
+    "a": 113,
+    "area": 37337
+   },
+   {
+    "iso": "PRY",
+    "country": "Paraguay",
+    "l": 107,
+    "w": 120,
+    "a": 113,
+    "area": 397441
+   },
+   {
+    "iso": "MKD",
+    "country": "North Macedonia",
+    "l": 105,
+    "w": 122,
+    "a": 113,
+    "area": 24259
+   },
+   {
+    "iso": "LBR",
+    "country": "Liberia",
+    "l": 106,
+    "w": 120,
+    "a": 113,
+    "area": 94438
+   },
+   {
+    "iso": "BLZ",
+    "country": "Belize",
+    "l": 135,
+    "w": 88,
+    "a": 112,
+    "area": 24358
+   },
+   {
+    "iso": "ECU",
+    "country": "Ecuador",
+    "l": 102,
+    "w": 120,
+    "a": 111,
+    "area": 252546
+   },
+   {
+    "iso": "JPN",
+    "country": "Japan",
+    "l": 132,
+    "w": 85,
+    "a": 109,
+    "area": 374532
+   },
+   {
+    "iso": "FRA",
+    "country": "France",
+    "l": 106,
+    "w": 110,
+    "a": 108,
+    "area": 632330
+   },
+   {
+    "iso": "DOM",
+    "country": "Dominican Republic",
+    "l": 141,
+    "w": 73,
+    "a": 107,
+    "area": 49713
+   },
+   {
+    "iso": "IRQ",
+    "country": "Iraq",
+    "l": 95,
+    "w": 118,
+    "a": 106,
+    "area": 438299
+   },
+   {
+    "iso": "ROU",
+    "country": "Romania",
+    "l": 104,
+    "w": 105,
+    "a": 105,
+    "area": 236735
+   },
+   {
+    "iso": "IRN",
+    "country": "Iran",
+    "l": 86,
+    "w": 124,
+    "a": 105,
+    "area": 1626783
+   },
+   {
+    "iso": "HTI",
+    "country": "Haiti",
+    "l": 134,
+    "w": 73,
+    "a": 104,
+    "area": 26310
+   },
+   {
+    "iso": "ARG",
+    "country": "Argentina",
+    "l": 85,
+    "w": 120,
+    "a": 103,
+    "area": 2788106
+   },
+   {
+    "iso": "CHL",
+    "country": "Chile",
+    "l": 72,
+    "w": 131,
+    "a": 101,
+    "area": 729629
+   },
+   {
+    "iso": "TWN",
+    "country": "Taiwan",
+    "l": 113,
+    "w": 88,
+    "a": 101,
+    "area": 35374
+   },
+   {
+    "iso": "CMR",
+    "country": "Cameroon",
+    "l": 91,
+    "w": 109,
+    "a": 100,
+    "area": 463234
+   },
+   {
+    "iso": "AZE",
+    "country": "Azerbaijan",
+    "l": 81,
+    "w": 118,
+    "a": 99,
+    "area": 83692
+   },
+   {
+    "iso": "SLV",
+    "country": "El Salvador",
+    "l": 118,
+    "w": 77,
+    "a": 97,
+    "area": 21017
+   },
+   {
+    "iso": "OMN",
+    "country": "Oman",
+    "l": 85,
+    "w": 109,
+    "a": 97,
+    "area": 311571
+   },
+   {
+    "iso": "GTM",
+    "country": "Guatemala",
+    "l": 104,
+    "w": 90,
+    "a": 97,
+    "area": 104899
+   },
+   {
+    "iso": "BEL",
+    "country": "Belgium",
+    "l": 84,
+    "w": 106,
+    "a": 95,
+    "area": 31860
+   },
+   {
+    "iso": "BIH",
+    "country": "Bosnia and Herzegovina",
+    "l": 82,
+    "w": 108,
+    "a": 95,
+    "area": 52112
+   },
+   {
+    "iso": "CRI",
+    "country": "Costa Rica",
+    "l": 100,
+    "w": 89,
+    "a": 95,
+    "area": 49462
+   },
+   {
+    "iso": "NIC",
+    "country": "Nicaragua",
+    "l": 106,
+    "w": 82,
+    "a": 94,
+    "area": 129562
+   },
+   {
+    "iso": "MAR",
+    "country": "Morocco",
+    "l": 88,
+    "w": 97,
+    "a": 93,
+    "area": 583187
+   },
+   {
+    "iso": "NER",
+    "country": "Niger",
+    "l": 83,
+    "w": 100,
+    "a": 91,
+    "area": 1185078
+   },
+   {
+    "iso": "SVN",
+    "country": "Slovenia",
+    "l": 76,
+    "w": 106,
+    "a": 91,
+    "area": 21419
+   },
+   {
+    "iso": "PRT",
+    "country": "Portugal",
+    "l": 88,
+    "w": 93,
+    "a": 91,
+    "area": 86846
+   },
+   {
+    "iso": "PAN",
+    "country": "Panama",
+    "l": 103,
+    "w": 78,
+    "a": 91,
+    "area": 75659
+   },
+   {
+    "iso": "EGY",
+    "country": "Egypt",
+    "l": 81,
+    "w": 98,
+    "a": 90,
+    "area": 996234
+   },
+   {
+    "iso": "SAU",
+    "country": "Saudi Arabia",
+    "l": 78,
+    "w": 99,
+    "a": 89,
+    "area": 1930815
+   },
+   {
+    "iso": "MMR",
+    "country": "Myanmar",
+    "l": 81,
+    "w": 95,
+    "a": 88,
+    "area": 663003
+   },
+   {
+    "iso": "HRV",
+    "country": "Croatia",
+    "l": 72,
+    "w": 103,
+    "a": 88,
+    "area": 52898
+   },
+   {
+    "iso": "HND",
+    "country": "Honduras",
+    "l": 99,
+    "w": 76,
+    "a": 87,
+    "area": 111308
+   },
+   {
+    "iso": "PHL",
+    "country": "Philippines",
+    "l": 100,
+    "w": 74,
+    "a": 87,
+    "area": 281511
+   },
+   {
+    "iso": "DEU",
+    "country": "Germany",
+    "l": 80,
+    "w": 93,
+    "a": 87,
+    "area": 355660
+   },
+   {
+    "iso": "TUN",
+    "country": "Tunisia",
+    "l": 81,
+    "w": 93,
+    "a": 87,
+    "area": 157320
+   },
+   {
+    "iso": "IDN",
+    "country": "Indonesia",
+    "l": 89,
+    "w": 83,
+    "a": 86,
+    "area": 1861022
+   },
+   {
+    "iso": "AUT",
+    "country": "Austria",
+    "l": 75,
+    "w": 96,
+    "a": 86,
+    "area": 82368
+   },
+   {
+    "iso": "MDG",
+    "country": "Madagascar",
+    "l": 85,
+    "w": 85,
+    "a": 85,
+    "area": 590361
+   },
+   {
+    "iso": "SOM",
+    "country": "Somalia",
+    "l": 86,
+    "w": 83,
+    "a": 85,
+    "area": 467556
+   },
+   {
+    "iso": "SSD",
+    "country": "South Sudan",
+    "l": 73,
+    "w": 97,
+    "a": 85,
+    "area": 622872
+   },
+   {
+    "iso": "IRL",
+    "country": "Ireland",
+    "l": 84,
+    "w": 85,
+    "a": 84,
+    "area": 68097
+   },
+   {
+    "iso": "ESP",
+    "country": "Spain",
+    "l": 82,
+    "w": 86,
+    "a": 84,
+    "area": 506752
+   },
+   {
+    "iso": "CHE",
+    "country": "Switzerland",
+    "l": 68,
+    "w": 99,
+    "a": 83,
+    "area": 38617
+   },
+   {
+    "iso": "KEN",
+    "country": "Kenya",
+    "l": 84,
+    "w": 82,
+    "a": 83,
+    "area": 593005
+   },
+   {
+    "iso": "MNG",
+    "country": "Mongolia",
+    "l": 71,
+    "w": 94,
+    "a": 83,
+    "area": 1557599
+   },
+   {
+    "iso": "ITA",
+    "country": "Italy",
+    "l": 70,
+    "w": 95,
+    "a": 83,
+    "area": 300176
+   },
+   {
+    "iso": "GEO",
+    "country": "Georgia",
+    "l": 76,
+    "w": 87,
+    "a": 82,
+    "area": 69867
+   },
+   {
+    "iso": "PNG",
+    "country": "Papua New Guinea",
+    "l": 82,
+    "w": 81,
+    "a": 81,
+    "area": 458943
+   },
+   {
+    "iso": "SVK",
+    "country": "Slovakia",
+    "l": 84,
+    "w": 79,
+    "a": 81,
+    "area": 49467
+   },
+   {
+    "iso": "CZE",
+    "country": "Czech Republic",
+    "l": 76,
+    "w": 81,
+    "a": 79,
+    "area": 77951
+   },
+   {
+    "iso": "LBY",
+    "country": "Libya",
+    "l": 67,
+    "w": 90,
+    "a": 79,
+    "area": 1626195
+   },
+   {
+    "iso": "TUR",
+    "country": "Turkey",
+    "l": 77,
+    "w": 80,
+    "a": 78,
+    "area": 783256
+   },
+   {
+    "iso": "ARM",
+    "country": "Armenia",
+    "l": 73,
+    "w": 83,
+    "a": 78,
+    "area": 31822
+   },
+   {
+    "iso": "ISL",
+    "country": "Iceland",
+    "l": 81,
+    "w": 72,
+    "a": 76,
+    "area": 100229
+   },
+   {
+    "iso": "NGA",
+    "country": "Nigeria",
+    "l": 62,
+    "w": 89,
+    "a": 76,
+    "area": 900711
+   },
+   {
+    "iso": "BGR",
+    "country": "Bulgaria",
+    "l": 64,
+    "w": 84,
+    "a": 74,
+    "area": 110617
+   },
+   {
+    "iso": "SRB",
+    "country": "Serbia",
+    "l": 72,
+    "w": 76,
+    "a": 74,
+    "area": 79770
+   },
+   {
+    "iso": "MEX",
+    "country": "Mexico",
+    "l": 69,
+    "w": 79,
+    "a": 74,
+    "area": 1962782
+   },
+   {
+    "iso": "TCD",
+    "country": "Chad",
+    "l": 61,
+    "w": 85,
+    "a": 73,
+    "area": 1279602
+   },
+   {
+    "iso": "THA",
+    "country": "Thailand",
+    "l": 67,
+    "w": 79,
+    "a": 73,
+    "area": 514714
+   },
+   {
+    "iso": "SLB",
+    "country": "Solomon Islands",
+    "l": 76,
+    "w": 69,
+    "a": 72,
+    "area": 21375
+   },
+   {
+    "iso": "HUN",
+    "country": "Hungary",
+    "l": 69,
+    "w": 73,
+    "a": 71,
+    "area": 92463
+   },
+   {
+    "iso": "LAO",
+    "country": "Laos",
+    "l": 64,
+    "w": 78,
+    "a": 71,
+    "area": 228483
+   },
+   {
+    "iso": "PRK",
+    "country": "North Korea",
+    "l": 70,
+    "w": 71,
+    "a": 70,
+    "area": 123380
+   },
+   {
+    "iso": "SDN",
+    "country": "Sudan",
+    "l": 62,
+    "w": 78,
+    "a": 70,
+    "area": 1867252
+   },
+   {
+    "iso": "ISR",
+    "country": "Israel",
+    "l": 61,
+    "w": 78,
+    "a": 70,
+    "area": 21786
+   },
+   {
+    "iso": "KHM",
+    "country": "Cambodia",
+    "l": 62,
+    "w": 77,
+    "a": 70,
+    "area": 178626
+   },
+   {
+    "iso": "ERI",
+    "country": "Eritrea",
+    "l": 69,
+    "w": 69,
+    "a": 69,
+    "area": 122927
+   },
+   {
+    "iso": "ETH",
+    "country": "Ethiopia",
+    "l": 63,
+    "w": 74,
+    "a": 68,
+    "area": 1130336
+   },
+   {
+    "iso": "SYR",
+    "country": "Syria",
+    "l": 60,
+    "w": 77,
+    "a": 68,
+    "area": 184765
+   },
+   {
+    "iso": "MYS",
+    "country": "Malaysia",
+    "l": 64,
+    "w": 72,
+    "a": 68,
+    "area": 327604
+   },
+   {
+    "iso": "VNM",
+    "country": "Vietnam",
+    "l": 59,
+    "w": 75,
+    "a": 67,
+    "area": 330651
+   },
+   {
+    "iso": "JOR",
+    "country": "Jordan",
+    "l": 58,
+    "w": 75,
+    "a": 66,
+    "area": 86514
+   },
+   {
+    "iso": "KOR",
+    "country": "South Korea",
+    "l": 55,
+    "w": 73,
+    "a": 64,
+    "area": 95799
+   },
+   {
+    "iso": "YEM",
+    "country": "Yemen",
+    "l": 52,
+    "w": 73,
+    "a": 63,
+    "area": 455431
+   },
+   {
+    "iso": "SOL",
+    "country": "Somaliland",
+    "l": 52,
+    "w": 73,
+    "a": 63,
+    "area": 171359
+   },
+   {
+    "iso": "DJI",
+    "country": "Djibouti",
+    "l": 40,
+    "w": 66,
+    "a": 53,
+    "area": 21941
+   }
+  ]
+ },
+ "uk": {
+  "country": {
+   "iso": "GBR",
+   "country": "United Kingdom",
+   "area_km2_grid": 239645,
+   "cells": 529,
+   "lithoref18_mean": 115.58329047916705,
+   "winterc_mean": 113.79910736492037,
+   "average_mean": 114.69119892204371,
+   "average_max": 149.43507385253906,
+   "average_min": 78.45462799072266,
+   "crust_mean": 31.050439451212178
+  },
+  "rank_thickest": 73,
+  "l_range": [
+   65.90485382080078,
+   172.39309692382812
+  ],
+  "w_range": [
+   85.09839630126953,
+   156.32810974121094
+  ],
+  "crust_mean": 31.050439451212178
+ },
+ "plates": {
+  "n": 53,
+  "big": [
+   {
+    "code": "PA",
+    "plate": "Pacific",
+    "area_share": 0.20506289993471896,
+    "lithoref18_mean": 98.93482369534598,
+    "winterc_mean": 84.42412431403861,
+    "average_mean": 91.6794740046923,
+    "ocean_share": 0.971365755434109
+   },
+   {
+    "code": "AF",
+    "plate": "Africa",
+    "area_share": 0.11462664927514409,
+    "lithoref18_mean": 109.17951851092845,
+    "winterc_mean": 108.32675047837648,
+    "average_mean": 108.75313449465247,
+    "ocean_share": 0.5238133873042689
+   },
+   {
+    "code": "AN",
+    "plate": "Antarctica",
+    "area_share": 0.11401359859647596,
+    "lithoref18_mean": 105.28540170723375,
+    "winterc_mean": 96.96678313497772,
+    "average_mean": 101.12609242110574,
+    "ocean_share": 0.6748571897271712
+   },
+   {
+    "code": "NA",
+    "plate": "North America",
+    "area_share": 0.10868394760959346,
+    "lithoref18_mean": 122.42621175977837,
+    "winterc_mean": 129.07795383501767,
+    "average_mean": 125.75208279739806,
+    "ocean_share": 0.27480786057148354
+   },
+   {
+    "code": "EU",
+    "plate": "Eurasia",
+    "area_share": 0.09520718952439562,
+    "lithoref18_mean": 117.17333066191547,
+    "winterc_mean": 148.86727440505243,
+    "average_mean": 133.02030253348397,
+    "ocean_share": 0.10610724390921411
+   },
+   {
+    "code": "AU",
+    "plate": "Australia",
+    "area_share": 0.09014256358727767,
+    "lithoref18_mean": 102.50612484426263,
+    "winterc_mean": 105.53621125056041,
+    "average_mean": 104.0211680474115,
+    "ocean_share": 0.5963769898775891
+   },
+   {
+    "code": "SA",
+    "plate": "South America",
+    "area_share": 0.08201681428837529,
+    "lithoref18_mean": 116.06786725160512,
+    "winterc_mean": 118.60111758423704,
+    "average_mean": 117.33449241792108,
+    "ocean_share": 0.5133543561898359
+   },
+   {
+    "code": "SO",
+    "plate": "Somalia",
+    "area_share": 0.03755065857112753,
+    "lithoref18_mean": 101.71668848697624,
+    "winterc_mean": 91.5545416078175,
+    "average_mean": 96.63561504739685,
+    "ocean_share": 0.7221145833727926
+   },
+   {
+    "code": "NZ",
+    "plate": "Nazca",
+    "area_share": 0.031584552908638666,
+    "lithoref18_mean": 66.58797835793825,
+    "winterc_mean": 72.82498165741079,
+    "average_mean": 69.70648000767453,
+    "ocean_share": 0.9990925101426824
+   },
+   {
+    "code": "IN",
+    "plate": "India",
+    "area_share": 0.024395166721047707,
+    "lithoref18_mean": 117.50187272074294,
+    "winterc_mean": 110.97723316555262,
+    "average_mean": 114.23955294314779,
+    "ocean_share": 0.6366342169499729
+   },
+   {
+    "code": "SU",
+    "plate": "Sunda",
+    "area_share": 0.017486664985994348,
+    "lithoref18_mean": 75.10890752043134,
+    "winterc_mean": 76.6171441826573,
+    "average_mean": 75.86302585154432,
+    "ocean_share": 0.12614395215388674
+   },
+   {
+    "code": "PS",
+    "plate": "Philippine Sea",
+    "area_share": 0.010655978138243108,
+    "lithoref18_mean": 86.63410690950529,
+    "winterc_mean": 78.70715651080651,
+    "average_mean": 82.67063171015589,
+    "ocean_share": 0.7397585379486246
+   },
+   {
+    "code": "AM",
+    "plate": "Amur",
+    "area_share": 0.010394661643905678,
+    "lithoref18_mean": 67.0654946211809,
+    "winterc_mean": 85.14818753100771,
+    "average_mean": 76.10684107609431,
+    "ocean_share": 0.015665023181047812
+   }
+  ]
+ },
+ "cratons": [
+  {
+   "name": "Superior craton",
+   "where": "Canada",
+   "lat": 50.0,
+   "lon": -85.0,
+   "l": 179.7004852294922,
+   "w": 242.40705108642578,
+   "a": 211.05376815795898,
+   "crust": 39.23853874206543,
+   "age": null,
+   "plate": "North America"
+  },
+  {
+   "name": "Slave craton",
+   "where": "Canada",
+   "lat": 64.5,
+   "lon": -111.0,
+   "l": 177.16399765014648,
+   "w": 236.32436752319336,
+   "a": 206.74418258666992,
+   "crust": 37.40729808807373,
+   "age": null,
+   "plate": "North America"
+  },
+  {
+   "name": "Siberian craton",
+   "where": "Russia",
+   "lat": 65.0,
+   "lon": 110.0,
+   "l": 206.69195556640625,
+   "w": 247.65186309814453,
+   "a": 227.1719093322754,
+   "crust": 38.94491004943848,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Baltic Shield",
+   "where": "Finland",
+   "lat": 63.0,
+   "lon": 28.0,
+   "l": 187.67770385742188,
+   "w": 300.0,
+   "a": 243.83885192871094,
+   "crust": 51.0345516204834,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "West African craton",
+   "where": "Mali and Mauritania",
+   "lat": 19.0,
+   "lon": -4.0,
+   "l": 215.36546325683594,
+   "w": 209.84455108642578,
+   "a": 212.60500717163086,
+   "crust": 34.43160533905029,
+   "age": null,
+   "plate": "Africa"
+  },
+  {
+   "name": "Congo craton",
+   "where": "DR Congo",
+   "lat": -2.0,
+   "lon": 22.0,
+   "l": 202.23340606689453,
+   "w": 209.69124603271484,
+   "a": 205.9623260498047,
+   "crust": 35.80698585510254,
+   "age": null,
+   "plate": "Africa"
+  },
+  {
+   "name": "Kaapvaal craton",
+   "where": "South Africa",
+   "lat": -27.0,
+   "lon": 26.0,
+   "l": 172.40404510498047,
+   "w": 171.56669998168945,
+   "a": 171.98537254333496,
+   "crust": 37.67744731903076,
+   "age": null,
+   "plate": "Africa"
+  },
+  {
+   "name": "Zimbabwe craton",
+   "where": "Zimbabwe",
+   "lat": -19.5,
+   "lon": 30.0,
+   "l": 176.18794631958008,
+   "w": 164.3683738708496,
+   "a": 170.27816009521484,
+   "crust": 38.68074607849121,
+   "age": null,
+   "plate": "Africa"
+  },
+  {
+   "name": "Tanzania craton",
+   "where": "Tanzania",
+   "lat": -4.0,
+   "lon": 34.0,
+   "l": 164.39741897583008,
+   "w": 117.68490600585938,
+   "a": 141.04116249084473,
+   "crust": 36.814635276794434,
+   "age": null,
+   "plate": "Somalia"
+  },
+  {
+   "name": "Yilgarn craton",
+   "where": "Western Australia",
+   "lat": -29.0,
+   "lon": 119.0,
+   "l": 217.29793167114258,
+   "w": 267.5666046142578,
+   "a": 242.4322681427002,
+   "crust": 35.0272216796875,
+   "age": null,
+   "plate": "Australia"
+  },
+  {
+   "name": "Amazonian craton",
+   "where": "Brazil",
+   "lat": -5.0,
+   "lon": -55.0,
+   "l": 194.40029525756836,
+   "w": 188.5535774230957,
+   "a": 191.47693634033203,
+   "crust": 36.16439151763916,
+   "age": null,
+   "plate": "South America"
+  },
+  {
+   "name": "Sao Francisco craton",
+   "where": "Brazil",
+   "lat": -13.0,
+   "lon": -43.0,
+   "l": 156.55524444580078,
+   "w": 186.20784759521484,
+   "a": 171.3815460205078,
+   "crust": 36.24711799621582,
+   "age": null,
+   "plate": "South America"
+  },
+  {
+   "name": "Dharwar craton",
+   "where": "India",
+   "lat": 14.0,
+   "lon": 76.0,
+   "l": 154.8221549987793,
+   "w": 132.25730514526367,
+   "a": 143.53973007202148,
+   "crust": 34.42812728881836,
+   "age": null,
+   "plate": "India"
+  },
+  {
+   "name": "North China craton (east)",
+   "where": "China",
+   "lat": 38.0,
+   "lon": 116.0,
+   "l": 57.483564376831055,
+   "w": 74.65571975708008,
+   "a": 66.06964206695557,
+   "crust": 34.803725242614746,
+   "age": null,
+   "plate": "Eurasia"
+  }
+ ],
+ "contrasts": [
+  {
+   "name": "Iceland",
+   "where": "Iceland",
+   "lat": 64.9,
+   "lon": -18.5,
+   "l": 83.33208351135247,
+   "w": 72.22973442077635,
+   "a": 77.78090896606442,
+   "crust": 29.106984615325928,
+   "age": 9.27934741973877,
+   "plate": "North America"
+  },
+  {
+   "name": "Afar",
+   "where": "Ethiopia",
+   "lat": 11.5,
+   "lon": 41.5,
+   "l": 35.864853858947754,
+   "w": 66.63681030273438,
+   "a": 51.250832080841064,
+   "crust": 29.085177421569824,
+   "age": null,
+   "plate": "Somalia"
+  },
+  {
+   "name": "Basin and Range",
+   "where": "Nevada, USA",
+   "lat": 39.5,
+   "lon": -116.5,
+   "l": 72.70829391479492,
+   "w": 75.29333305358887,
+   "a": 74.0008134841919,
+   "crust": 34.53010654449463,
+   "age": null,
+   "plate": "North America"
+  },
+  {
+   "name": "Tibetan Plateau",
+   "where": "China",
+   "lat": 32.0,
+   "lon": 88.0,
+   "l": 127.3652572631836,
+   "w": 296.5110626220703,
+   "a": 211.93815994262695,
+   "crust": 72.63428115844727,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Hawaii",
+   "where": "USA",
+   "lat": 19.6,
+   "lon": -155.5,
+   "l": 123.71630897521976,
+   "w": 87.713911819458,
+   "a": 105.71511039733886,
+   "crust": 13.107490682601934,
+   "age": 92.42208099365234,
+   "plate": "Pacific"
+  }
+ ],
+ "cratons_summary": {
+  "n": 14,
+  "median_l": 178.43224143981934,
+  "median_w": 199.12241172790527,
+  "n_over_150_both": 11
+ },
+ "big_cities": {
+  "n": 573,
+  "thickest": [
+   {
+    "name": "Moscow",
+    "cc": "RU",
+    "lat": 55.752,
+    "lon": 37.618,
+    "pop": 10381222,
+    "l": 208.5,
+    "w": 300.0,
+    "a": 254.2,
+    "country": "Russia"
+   },
+   {
+    "name": "Saint Petersburg",
+    "cc": "RU",
+    "lat": 59.939,
+    "lon": 30.314,
+    "pop": 5351935,
+    "l": 193.7,
+    "w": 299.9,
+    "a": 246.8,
+    "country": "Russia"
+   },
+   {
+    "name": "Nizhniy Novgorod",
+    "cc": "RU",
+    "lat": 56.329,
+    "lon": 44.002,
+    "pop": 1259013,
+    "l": 183.6,
+    "w": 300.0,
+    "a": 241.8,
+    "country": "Russia"
+   },
+   {
+    "name": "Kazan",
+    "cc": "RU",
+    "lat": 55.789,
+    "lon": 49.122,
+    "pop": 1243500,
+    "l": 193.8,
+    "w": 287.5,
+    "a": 240.7,
+    "country": "Russia"
+   },
+   {
+    "name": "Minsk",
+    "cc": "BY",
+    "lat": 53.9,
+    "lon": 27.567,
+    "pop": 1742124,
+    "l": 180.6,
+    "w": 299.7,
+    "a": 240.1,
+    "country": "Belarus"
+   },
+   {
+    "name": "Voronezh",
+    "cc": "RU",
+    "lat": 51.668,
+    "lon": 39.192,
+    "pop": 1047549,
+    "l": 191.3,
+    "w": 281.3,
+    "a": 236.3,
+    "country": "Russia"
+   },
+   {
+    "name": "Samara",
+    "cc": "RU",
+    "lat": 53.208,
+    "lon": 50.136,
+    "pop": 1163399,
+    "l": 184.8,
+    "w": 255.6,
+    "a": 220.2,
+    "country": "Russia"
+   },
+   {
+    "name": "Kharkiv",
+    "cc": "UA",
+    "lat": 49.982,
+    "lon": 36.255,
+    "pop": 1421125,
+    "l": 202.1,
+    "w": 237.5,
+    "a": 219.8,
+    "country": "Ukraine"
+   },
+   {
+    "name": "Meerut",
+    "cc": "IN",
+    "lat": 28.98,
+    "lon": 77.706,
+    "pop": 1223184,
+    "l": 188.6,
+    "w": 245.1,
+    "a": 216.8,
+    "country": "India"
+   },
+   {
+    "name": "Delhi",
+    "cc": "IN",
+    "lat": 28.652,
+    "lon": 77.231,
+    "pop": 11034555,
+    "l": 194.1,
+    "w": 239.2,
+    "a": 216.6,
+    "country": "India"
+   }
+  ],
+  "thinnest": [
+   {
+    "name": "Tianjin",
+    "cc": "CN",
+    "lat": 39.142,
+    "lon": 117.177,
+    "pop": 13866009,
+    "l": 48.6,
+    "w": 68.8,
+    "a": 58.7,
+    "country": "People's Republic of China"
+   },
+   {
+    "name": "Algiers",
+    "cc": "DZ",
+    "lat": 36.732,
+    "lon": 3.087,
+    "pop": 2364230,
+    "l": 42.3,
+    "w": 76.5,
+    "a": 59.4,
+    "country": "Algeria"
+   },
+   {
+    "name": "Aden",
+    "cc": "YE",
+    "lat": 12.78,
+    "lon": 45.039,
+    "pop": 1079670,
+    "l": 56.5,
+    "w": 64.9,
+    "a": 60.7,
+    "country": "Yemen"
+   },
+   {
+    "name": "Da Nang",
+    "cc": "VN",
+    "lat": 16.068,
+    "lon": 108.221,
+    "pop": 1276000,
+    "l": 48.9,
+    "w": 73.1,
+    "a": 61.0,
+    "country": "Vietnam"
+   },
+   {
+    "name": "Fes",
+    "cc": "MA",
+    "lat": 34.033,
+    "lon": -5.0,
+    "pop": 1191905,
+    "l": 56.6,
+    "w": 66.2,
+    "a": 61.4,
+    "country": "Morocco"
+   },
+   {
+    "name": "Rabat",
+    "cc": "MA",
+    "lat": 34.013,
+    "lon": -6.833,
+    "pop": 1655753,
+    "l": 52.5,
+    "w": 70.7,
+    "a": 61.6,
+    "country": "Morocco"
+   },
+   {
+    "name": "Tangshan",
+    "cc": "CN",
+    "lat": 39.644,
+    "lon": 118.183,
+    "pop": 3372102,
+    "l": 51.9,
+    "w": 72.0,
+    "a": 62.0,
+    "country": "People's Republic of China"
+   },
+   {
+    "name": "Huế",
+    "cc": "VN",
+    "lat": 16.462,
+    "lon": 107.595,
+    "pop": 1380000,
+    "l": 49.2,
+    "w": 75.8,
+    "a": 62.5,
+    "country": "Vietnam"
+   },
+   {
+    "name": "Tangier",
+    "cc": "MA",
+    "lat": 35.767,
+    "lon": -5.8,
+    "pop": 1035141,
+    "l": 56.4,
+    "w": 68.8,
+    "a": 62.6,
+    "country": "Morocco"
+   },
+   {
+    "name": "Biên Hòa",
+    "cc": "VN",
+    "lat": 10.945,
+    "lon": 106.824,
+    "pop": 1272235,
+    "l": 51.2,
+    "w": 74.2,
+    "a": 62.7,
+    "country": "Vietnam"
+   }
+  ],
+  "median_a": 94.7,
+  "share_people_on_over_150": 0.18484179298280407
+ },
+ "uk_places": [
+  {
+   "name": "London",
+   "lat": 51.509,
+   "lon": -0.126,
+   "l": 140.72687453662115,
+   "w": 153.854413484375,
+   "a": 147.29064401049808,
+   "crust": 32.66315243505859,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Birmingham",
+   "lat": 52.481,
+   "lon": -1.9,
+   "l": 122.93888655395489,
+   "w": 116.65056734008778,
+   "a": 119.79472694702132,
+   "crust": 32.520473593139656,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Manchester",
+   "lat": 53.481,
+   "lon": -2.237,
+   "l": 101.42352264990257,
+   "w": 106.088195553711,
+   "a": 103.75585910180678,
+   "crust": 32.545546304931634,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Leeds",
+   "lat": 53.797,
+   "lon": -1.548,
+   "l": 131.04773830078113,
+   "w": 112.86764296166992,
+   "a": 121.95769063122552,
+   "crust": 32.041108462646484,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Glasgow",
+   "lat": 55.865,
+   "lon": -4.258,
+   "l": 79.3649005908202,
+   "w": 98.19731801147458,
+   "a": 88.7811093011474,
+   "crust": 30.574422971191392,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Edinburgh",
+   "lat": 55.953,
+   "lon": -3.193,
+   "l": 91.81210060693346,
+   "w": 107.00571942333983,
+   "a": 99.40891001513664,
+   "crust": 31.76090658288573,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Cardiff",
+   "lat": 51.48,
+   "lon": -3.18,
+   "l": 145.68153306274422,
+   "w": 118.9014674713134,
+   "a": 132.2915002670288,
+   "crust": 31.335945228576648,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Belfast",
+   "lat": 54.597,
+   "lon": -5.93,
+   "l": 71.5038222949219,
+   "w": 87.15649873535156,
+   "a": 79.33016051513674,
+   "crust": 29.20720583618164,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Lerwick",
+   "lat": 60.155,
+   "lon": -1.145,
+   "l": 96.65308208007826,
+   "w": 114.99829284667962,
+   "a": 105.82568746337894,
+   "crust": 27.024177047729474,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Penzance",
+   "lat": 50.119,
+   "lon": -5.537,
+   "l": 138.48201554296867,
+   "w": 85.80849394873047,
+   "a": 112.14525474584956,
+   "crust": 27.265997562499994,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Preston",
+   "lat": 53.763,
+   "lon": -2.703,
+   "l": 87.84880832226548,
+   "w": 99.81881843164062,
+   "a": 93.83381337695306,
+   "crust": 32.71609962060547,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Lancaster",
+   "lat": 54.047,
+   "lon": -2.801,
+   "l": 88.85965831543007,
+   "w": 97.42454492480475,
+   "a": 93.1421016201174,
+   "crust": 32.674939632080076,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Blackburn",
+   "lat": 53.75,
+   "lon": -2.483,
+   "l": 95.82691027832017,
+   "w": 100.72106271362303,
+   "a": 98.2739864959716,
+   "crust": 32.59423455810547,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Clitheroe",
+   "lat": 53.871,
+   "lon": -2.393,
+   "l": 100.87928809570312,
+   "w": 100.54600143652341,
+   "a": 100.71264476611327,
+   "crust": 32.500950338134764,
+   "age": null,
+   "plate": "Eurasia"
+  },
+  {
+   "name": "Blackpool",
+   "lat": 53.817,
+   "lon": -3.05,
+   "l": 78.72007975463843,
+   "w": 98.4925159057617,
+   "a": 88.60629783020005,
+   "crust": 32.696696960449216,
+   "age": null,
+   "plate": "Eurasia"
+  }
+ ],
+ "lancashire": {
+  "l": 90.42694895327146,
+  "w": 99.4005886824707,
+  "nearest_deep": {
+   "km": 1480.1596762106255,
+   "lat": 62.625,
+   "lon": 16.375,
+   "country": "Sweden"
+  }
+ },
+ "volcanoes": {
+  "n": 1828,
+  "n_ocean": 279,
+  "median_a": 83.58153493079047,
+  "median_a_continental": 85.05086370262157,
+  "share_under_100": 0.7095185995623632,
+  "share_over_200": 0.012035010940919038,
+  "share_cont_under_100": 0.7017430600387347,
+  "median_l": 85.0766903997054,
+  "median_w": 77.83790165252685
+ },
+ "diamonds": {
+  "n": 63,
+  "median_a": 207.14058382763432,
+  "median_l": 179.3949298094855,
+  "median_w": 221.84634237521914,
+  "share_over_150": 0.873015873015873,
+  "share_under_100": 0.015873015873015872,
+  "cont_share_thinner_than_median": 0.9230153199318772,
+  "thinnest": [
+   {
+    "name": "Baken diamond mine",
+    "a": 89.6261427834494,
+    "lat": -28.482724,
+    "lon": 16.776982
+   },
+   {
+    "name": "Crater of Diamonds State Park",
+    "a": 124.90462604284235,
+    "lat": 34.0331,
+    "lon": -93.6703
+   },
+   {
+    "name": "Kollur Mine",
+    "a": 132.42051111371228,
+    "lat": 16.702892,
+    "lon": 80.031453
+   },
+   {
+    "name": "Marange diamond fields",
+    "a": 132.6462537384821,
+    "lat": -19.590555,
+    "lon": 32.352222
+   },
+   {
+    "name": "Kelsey Lake Diamond Mine",
+    "a": 140.52843979498294,
+    "lat": 40.9939,
+    "lon": -105.505
+   }
+  ]
+ },
+ "continent_median_a": 116.64934158325195
+}
