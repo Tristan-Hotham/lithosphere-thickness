@@ -1,0 +1,194 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+\newfontfamily\headfont{Inter}[UprightFont=*-ExtraBold,BoldFont=*-ExtraBold,Extension=.otf,Path=/usr/share/fonts/opentype/inter/]
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{graphicx,booktabs,float,caption,array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{setspace}
+\setstretch{1.05}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\titleformat{\section}{\headfont\Large}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\headfont\large}{\thesubsection}{0.8em}{}
+\captionsetup{font=small,labelfont=bf}
+\urlstyle{same}
+\hypersetup{pdftitle={How Thick Is the Ground Beneath You? Lithosphere Thickness from Two Open Global Models},pdfauthor={Tristan Hotham}}
+
+\begin{document}
+\begin{center}
+{\Large\bfseries How Thick Is the Ground Beneath You?\\[2pt] Lithosphere Thickness from Two Open Global Models\par}
+\vspace{1.2em}
+{\large Tristan Hotham\par}
+\vspace{0.3em}
+{\small Independent researcher\\
+ORCID: 0000-0003-4931-9349\\
+DOI: \href{https://doi.org/10.5281/zenodo.23782261}{https://doi.org/10.5281/zenodo.23782261}\par}
+\vspace{0.8em}
+2026
+\end{center}
+
+\begin{quote}
+\small
+\begin{center}\textbf{Abstract}\end{center}
+The lithosphere, the rigid outer shell of the Earth that makes up the tectonic plates, varies greatly in thickness, but most maps of it are published as images rather than numbers. I compare two openly licensed global models of the depth to the base of the lithosphere, LithoRef18 (Afonso et al. 2019) and WINTERC-G (Fullea et al. 2021), on a common 0.25 degree grid, and combine them with sea-floor ages, plate outlines, volcanoes and diamond mines. The two models give the same area-weighted global mean, {{models.lithoref18.all.mean|int}} km, and correlate cell by cell at r = {{agree.r_all|f2}}, with a median absolute difference of {{agree.median_absdiff|int}} km; they differ by more than 50 km over {{agree.share_diff_over_50|pct}} of the surface, mostly beneath the East European Platform and Tibet. In the oceans, LithoRef18 thickens from a median of {{ridge.lithoref18_median_young|int}} km on sea floor younger than 2 million years to {{ridge.lithoref18_median_old|int}} km on sea floor older than 150 million years, tracking the square root of age (r = {{ocean_fit.lithoref18.r_sqrt_age_all_ocean|f2}}). On land the deepest roots lie under cratons. Of {{volcanoes.n|int}} volcanoes listed in Wikidata with a Global Volcanism Program number, {{volcanoes.share_under_100|pct}} stand on lithosphere thinner than 100 km, while {{diamonds.share_over_150|pct}} of {{diamonds.n|int}} diamond mines sit on lithosphere thicker than 150 km, with a median deeper than {{diamonds.cont_share_thinner_than_median|pct}} of continental ground. The United Kingdom averages {{uk.country.average_mean|int}} km, close to the continental median. An interactive map accompanies the note. Both models are coarse and use thermal definitions of the boundary, so all values carry uncertainties of tens of kilometres.
+
+\textbf{Keywords:} lithosphere; lithosphere-asthenosphere boundary; plate tectonics; cratons; oceanic lithosphere; sea-floor age; diamonds; volcanoes; open data; interactive map
+\end{quote}
+
+\section{Introduction}
+
+Beneath every place on Earth the rock passes, at some depth, from a cold, strong layer that moves as part of a tectonic plate into hotter, weaker mantle that can flow over geological time. The strong layer is the lithosphere: the crust together with the uppermost, rigid part of the mantle. Its base, the lithosphere-asthenosphere boundary, is one of the most important surfaces in the Earth, because it controls how plates move, where magma can form and how continents survive. It is also one of the hardest to see. No one can drill to it, and its depth has to be inferred from seismic waves, heat flow, topography and gravity.
+
+The pattern that emerges from such work is well established in outline. Oceanic lithosphere is made thin at mid-ocean ridges and thickens as it ages and cools; the old cores of continents, the cratons, rest on cold roots that reach depths of 200 km or more; and young rifts and active margins have thin lithosphere (Turcotte and Schubert 2014). A widely shared map of this pattern is Fabio Crameri's rendering on the s-Ink graphics repository of the model of Conrad and Lithgow-Bertelloni (2006), in which oceanic thickness is set from the square root of sea-floor age and continental thickness from seismic tomography (Crameri 2021; Conrad and Lithgow-Bertelloni 2006). That map is distributed under a Creative Commons licence, but only as images. I could not find an open copy of the grid behind it.
+
+This note asks a simple question that a reader might bring to such a map: how thick is the lithosphere beneath a given place, and how sure can we be? I answer it with two more recent global models that publish their values openly, LithoRef18 (Afonso et al. 2019) and WINTERC-G (Fullea et al. 2021). I put both on a common grid, measure where they agree and disagree, and use them to revisit four familiar patterns: the thickening of the ocean floor with age, the deep roots of cratons, the link between thin lithosphere and volcanoes, and the link between thick lithosphere and diamonds. I also report values for the United Kingdom. The results are presented in an interactive map at \url{https://maps.tristanhotham.com/lithosphere-thickness/}, where a reader can click anywhere for a cross-section of the ground beneath.
+
+\section{Data}
+
+\subsection{Lithosphere models}
+
+\textbf{LithoRef18} is a global reference model of the lithosphere and upper mantle built by joint inversion and analysis of several kinds of geophysical data (Afonso et al. 2019). I used the model's source file as distributed on the EarthByte GPlates Portal, which gives, for {{meta.lithoref18_points|int}} cells of 2 by 2 degrees, the surface elevation and the depths below sea level of the Moho and of the base of the lithosphere, among other variables. Following the portal's own derived grids, I take lithosphere thickness as the depth of the base below the surface (the base depth minus elevation) and crustal thickness as the Moho depth minus elevation. The EarthByte file area carries a CC BY 4.0 licence.
+
+\textbf{WINTERC-G} is a thermochemical model of the lithosphere and upper mantle from a coupled inversion of surface-wave dispersion, surface heat flow, elevation and satellite gravity data (Fullea et al. 2021). Version 5.4 is archived on Zenodo under CC BY 4.0 (Fullea et al. 2021b). I used its file of the depth of the thermal lithosphere-asthenosphere boundary at {{meta.winterc_nodes|int}} nodes of a triangular grid with an average spacing of about 225 km. Values run from 45 to 300 km, and {{models.winterc.max.n_at_max|int}} nodes sit at exactly 300 km, which I treat as a ceiling of the model.
+
+\subsection{Sea floor, plates and places}
+
+Sea-floor ages come from the present-day age grid of Seton et al. (2020), version 2020.1 on the GTS2012 timescale, at 6 arc-minutes (EarthByte, CC BY 4.0). Plate outlines and boundaries come from the PB2002 model of Bird (2003), in the GeoJSON conversion by Hugo Ahlenius (ODC-BY 1.0). Country outlines are simplified Natural Earth admin-0 polygons (public domain). Cities are GeoNames places of 100,000 people or more ({{meta.cities_page|int}} places; CC BY 4.0).
+
+Volcanoes are the {{volcanoes.n|int}} Wikidata items that carry a Smithsonian Global Volcanism Program volcano number and coordinates; {{volcanoes.n_ocean|int}} of them fall on oceanic crust in the age grid. Diamond mines are the {{diamonds.n|int}} Wikidata items with coordinates that are diamond mines or list diamond as their product. Both lists were retrieved through the QLever SPARQL endpoint on {{meta.retrieved}} (Wikidata, CC0). The mine list is short and favours large or well-known operations.
+
+\subsection{The s-Ink map}
+
+The s-Ink download for the Conrad and Lithgow-Bertelloni model holds 24 PNG images in several projections and colour maps and a one-page readme; it contains no gridded values (Crameri 2021). I use one of the images for visual comparison only and take no numbers from it.
+
+\section{Methods}
+
+\subsection{A common grid}
+
+All analysis uses a global grid of 0.25 degree cells (1,440 by 720). LithoRef18 is bilinearly interpolated from its 2 degree cell centres, wrapping in longitude. WINTERC-G is interpolated by inverse distance squared from the four nearest nodes, measured on the sphere. Neither step adds detail; the grid simply lets the two models be compared cell by cell and sampled at points. Sea-floor age is the mean of the 6 arc-minute nodes inside each cell, provided at least half of them are ocean; cells without an age count as continental, which therefore includes continental shelves and some marginal seas. All shares of area are weighted by the cosine of latitude. The default map and the point summaries use the simple mean of the two models.
+
+\subsection{Comparisons}
+
+Agreement is measured with area-weighted Pearson correlation and the area-weighted median of absolute differences. For the oceans I summarise thickness by bands of sea-floor age and fit a line through the origin against the square root of age on sea floor younger than 80 million years, with area weights. As a reference I draw the textbook half-space cooling thickness, $2.32\sqrt{\kappa t}$ with $\kappa = 10^{-6}$ m\textsuperscript{2} s\textsuperscript{-1}, which is {{ocean_fit.halfspace_c|f1}} km times the square root of the age in millions of years (Turcotte and Schubert 2014). This is an illustration of the expected shape, not a fit.
+
+Cratons are represented by {{cratons_summary.n|int}} points chosen as approximate centres from general geological maps, with six contrasting places (young rifts, a plateau and two hotspots). These points are illustrative and should not be read as boundaries. Points (volcanoes, mines, cities and towns) are sampled bilinearly. Country and plate averages are area-weighted means over cells whose centres fall inside each polygon; for countries I report those with at least 20,000 km\textsuperscript{2} in the grid ({{countries.n_big|int}} countries).
+
+\section{Results}
+
+\subsection{Two models, one pattern}
+
+Figure~\ref{fig:map} shows the mean of the two models, and Figure~\ref{fig:models} shows each model and their difference. Both models give an area-weighted global mean of {{models.lithoref18.all.mean|int}} km (LithoRef18 {{models.lithoref18.all.mean|f1}} km; WINTERC-G {{models.winterc.all.mean|f1}} km), but they distribute it differently (Table~\ref{tab:global}). WINTERC-G has a narrower range in the oceans, where it never falls below 45 km, and a wider one on the continents, where it reaches 300 km. Under {{agree.both_over_200_mkm2|f1}} million km\textsuperscript{2} both models put the base deeper than 200 km; under {{agree.either_over_200_mkm2|f1}} million km\textsuperscript{2} at least one does.
+
+{{TABLE_GLOBAL}}
+
+Cell by cell the models correlate at r = {{agree.r_all|f2}} (continents {{agree.r_continent|f2}}; oceans {{agree.r_ocean|f2}}), and the median absolute difference is {{agree.median_absdiff|int}} km ({{agree.median_absdiff_continent|int}} km on the continents and {{agree.median_absdiff_ocean|int}} km in the oceans). They differ by more than 50 km over {{agree.share_diff_over_50|pct}} of the surface (Figure~\ref{fig:agree}). The largest differences are under the East European Platform, where WINTERC-G reaches its 300 km ceiling and LithoRef18 is much shallower, and under the Tibetan Plateau, where WINTERC-G finds a root of {{contrasts.3.w|int}} km and LithoRef18 {{contrasts.3.l|int}} km at the point sampled. Along the mid-ocean ridges WINTERC-G is consistently thicker, as expected from its coarser node spacing and its 45 km minimum.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=\textwidth]{f_map.png}
+\caption{Depth to the base of the lithosphere, mean of LithoRef18 and WINTERC-G, Equal Earth projection. Orange lines: PB2002 plate boundaries (Bird 2003). Labels mark seven cratons.}\label{fig:map}
+\end{figure}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.86\textwidth]{f_models.png}
+\caption{(a) LithoRef18 and (b) WINTERC-G on the common grid; (c) WINTERC-G minus LithoRef18 (red where WINTERC-G is deeper).}\label{fig:models}
+\end{figure}
+
+\subsection{The ocean floor thickens with age}
+
+Figure~\ref{fig:ocean} shows ocean thickness by age band. In LithoRef18 the median rises from {{ocean_age.0.lithoref18_median|int}} km on sea floor younger than 2 million years to {{ocean_age.8.lithoref18_median|int}} km at 60 to 80 million years and then levels off near {{ridge.lithoref18_median_old|int}} km on the oldest sea floor. Over the whole ocean thickness correlates with the square root of age at r = {{ocean_fit.lithoref18.r_sqrt_age_all_ocean|f2}}, and a line through the origin for ages under 80 million years has a slope of {{ocean_fit.lithoref18.c_km_per_sqrt_myr|f1}} km per square-root million years, close to the half-space reference of {{ocean_fit.halfspace_c|f1}}. WINTERC-G rises more gently, from {{ridge.winterc_median_young|int}} km to {{ridge.winterc_median_old|int}} km (r = {{ocean_fit.winterc.r_sqrt_age_all_ocean|f2}}). The flattening of both curves for old sea floor is the behaviour that plate-cooling models were introduced to describe (Turcotte and Schubert 2014). These curves are not an independent test of cooling theory, because both models draw on information that is itself shaped by the cooling of the plates, but they show that the two models reproduce the expected pattern. The oldest sea floor in the age grid, about {{ridge.oldest.age|int}} million years, lies in the eastern Mediterranean.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.85\textwidth]{f_ocean.png}
+\caption{Lithosphere thickness against sea-floor age: medians of ocean cells in each age band, with the interquartile range shaded. Dashed: half-space cooling reference.}\label{fig:ocean}
+\end{figure}
+
+\subsection{Cratons and their exceptions}
+
+Table~\ref{tab:cratons} lists the craton and contrast points. The median craton point lies at {{cratons_summary.median_l|int}} km in LithoRef18 and {{cratons_summary.median_w|int}} km in WINTERC-G, and {{cratons_summary.n_over_150_both|int}} of the {{cratons_summary.n|int}} exceed 150 km in both. The exceptions are informative. The Tanzania and Dharwar points are thinner in WINTERC-G than in LithoRef18, and the eastern North China craton point has only {{cratons.13.a|int}} km on average, in keeping with the widely discussed loss of its deep root during the Phanerozoic. Among the {{big_cities.n|int}} cities of a million people or more, the thinnest lithosphere lies under {{big_cities.thinnest.0.name}} ({{big_cities.thinnest.0.a|int}} km on average), on that craton, and the thickest under {{big_cities.thickest.0.name}} ({{big_cities.thickest.0.a|int}} km), on the East European Platform.
+
+{{TABLE_CRATONS}}
+
+\subsection{Volcanoes on thin lithosphere, diamonds on thick}
+
+Figure~\ref{fig:roots} compares the distribution of continental area by thickness with the thickness under volcanoes and diamond mines. Continental ground has a median of {{continent_median_a|int}} km (mean of the two models). Volcanoes are concentrated on thin lithosphere: {{volcanoes.share_under_100|pct}} stand on less than 100 km and {{volcanoes.share_over_200|pct}} on more than 200 km, with a median of {{volcanoes.median_a|int}} km; for volcanoes on continental crust alone the median is {{volcanoes.median_a_continental|int}} km. Diamond mines show the opposite: {{diamonds.share_over_150|pct}} lie on lithosphere thicker than 150 km and only {{diamonds.share_under_100|pct1}} on less than 100 km. Their median, {{diamonds.median_a|int}} km, is deeper than {{diamonds.cont_share_thinner_than_median|pct}} of continental ground. This is consistent with the long-standing observation that primary diamond deposits are associated with old cratons, sometimes called Clifford's rule (Clifford 1966), and with the requirement of high pressure, and so great depth, for diamond to be stable in the mantle. The thinnest-floored site in the list is {{diamonds.thinnest.0.name}} ({{diamonds.thinnest.0.a|int}} km), near the lower Orange River, where diamonds are recovered from gravels that may lie far from their volcanic source; I have not checked the geology of each site.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.85\textwidth]{f_roots.png}
+\caption{Share of continental area (top), volcanoes (middle) and diamond mines (bottom) in 20 km bands of lithosphere thickness, mean of the two models.}\label{fig:roots}
+\end{figure}
+
+\subsection{Countries and the United Kingdom}
+
+Averaged over their land, the thickest countries are {{countries.thickest.0.country}} ({{countries.thickest.0.average_mean|int}} km), {{countries.thickest.1.country}} and {{countries.thickest.2.country}}, all on the East European Platform where WINTERC-G is capped; the thinnest are {{countries.thinnest.0.country}} ({{countries.thinnest.0.average_mean|int}} km) and other states on young rifts and active margins (Table~\ref{tab:countries}). The United Kingdom averages {{uk.country.average_mean|int}} km ({{uk.country.lithoref18_mean|int}} km in LithoRef18, {{uk.country.winterc_mean|int}} km in WINTERC-G), {{uk.rank_thickest|ord}} of {{countries.n_big|int}}, with a mean crust of {{uk.crust_mean|int}} km. Thickness tends to fall to the north and west (Figure~\ref{fig:uk}). Under five Lancashire towns the base lies at {{lancashire.l|int}} km in LithoRef18 and {{lancashire.w|int}} km in WINTERC-G on average. The nearest ground to Preston where both models exceed 200 km is in {{lancashire.nearest_deep.country}}, about {{lancashire.nearest_deep.km|r10}} km away. The models' coarse resolution means that differences between neighbouring British towns mostly reflect interpolation between a few grid points.
+
+{{TABLE_COUNTRIES}}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.9\textwidth]{f_uk.png}
+\caption{Left: mean lithosphere thickness under Britain and Ireland (same colour scale as Figure~\ref{fig:map}). Right: values under fifteen UK towns in each model; shaded band, interquartile range of continental ground.}\label{fig:uk}
+\end{figure}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=0.55\textwidth]{f_agree.png}
+\caption{Share of the Earth's surface in each 10 by 10 km class of LithoRef18 and WINTERC-G thickness (darker is more; colour on a power scale). Dashed: equality.}\label{fig:agree}
+\end{figure}
+
+\section{Discussion}
+
+The two models agree on the shape of the world's lithosphere and on its global average, and they disagree in exactly the places where geophysicists have long argued: beneath the East European Platform and beneath Tibet. A reader who clicks on a mid-ocean ridge, the Kaapvaal craton or the West African craton on the interactive map will see two numbers within a few tens of kilometres of each other; on the Baltic Shield they are {{cratons.3.w|int}} and {{cratons.3.l|int}} km, and on Tibet {{contrasts.3.w|int}} and {{contrasts.3.l|int}} km. Showing both, and their mean, seems more honest than presenting either as the answer.
+
+The familiar patterns survive the comparison. Oceanic lithosphere thickens with the square root of age and flattens when old; cratons sit on deep roots, with the eastern North China craton as the clearest exception; volcanoes stand mostly on thin lithosphere and diamond mines on thick. None of these findings is new, and the point of this note is not novelty but access: to make these patterns checkable from open numbers, at any place a reader cares about.
+
+\section{Limitations}
+
+First, the base of the lithosphere is not a sharp surface, and different definitions (thermal, seismic, rheological, chemical) place it at different depths. Both models here are thermal, so they are comparable with each other but not necessarily with seismic estimates. Second, both models are coarse: 2 degree cells for LithoRef18 and nodes about 225 km apart for WINTERC-G. The 0.25 degree grid is for display and sampling only, and values at single towns reflect interpolation. Third, WINTERC-G is capped at 300 km and floored at 45 km, which compresses its range at both ends. Fourth, the continental mask from the age grid includes continental shelves and some marginal seas. Fifth, the point lists from Wikidata are incomplete and uneven, especially for mines; the diamond result rests on {{diamonds.n|int}} sites. Sixth, the craton points are approximate centres chosen by eye from general maps. Finally, I did not reproduce the Conrad and Lithgow-Bertelloni grid, so the comparison with the s-Ink map is visual only.
+
+\section{Conclusion}
+
+Two open global models put the Earth's lithosphere at an average of about {{models.average.all.mean|int}} km, from around {{ridge.lithoref18_median_young|int}} km at the ridges in LithoRef18 to more than 200 km under the cratons. They agree well enough to answer a reader's question about a given place to within a few tens of kilometres almost everywhere, and the places where they do not agree are themselves worth knowing. The interactive map makes both models, and their disagreement, available at a click.
+
+\section*{Data and code availability}
+
+Code, derived data (CSV) and the interactive page are at \url{https://github.com/Tristan-Hotham/lithosphere-thickness}. The interactive map is at \url{https://maps.tristanhotham.com/lithosphere-thickness/}. This note and an archived copy of the code and data are at \url{https://doi.org/10.5281/zenodo.23782261}. Text, figures and derived data are released under CC BY-SA 4.0 (because the page reproduces a CC BY-SA 4.0 image); code under the MIT licence. The source models and data keep their own licences, given above.
+
+\section*{AI statement}
+
+I wrote the text, with drafting and editing assistance from Claude (Anthropic), which also helped prepare the analysis code. I reviewed and checked all text and results.
+
+\section*{References}
+\small
+\setlength{\parskip}{0.35em}
+Afonso, J.C., Salajegheh, F., Szwillus, W., Ebbing, J. and Gaina, C. (2019) A global reference model of the lithosphere and upper mantle from joint inversion and analysis of multiple data sets. \emph{Geophysical Journal International} 217(3): 1602 to 1628. \url{https://doi.org/10.1093/gji/ggz094}
+
+Bird, P. (2003) An updated digital model of plate boundaries. \emph{Geochemistry, Geophysics, Geosystems} 4(3): 1027. \url{https://doi.org/10.1029/2001GC000252}
+
+Clifford, T.N. (1966) Tectono-metallogenic units and metallogenic provinces of Africa. \emph{Earth and Planetary Science Letters} 1(6): 421 to 434.
+
+Conrad, C.P. and Lithgow-Bertelloni, C. (2006) Influence of continental roots and asthenosphere on plate-mantle coupling. \emph{Geophysical Research Letters} 33: L05312. \url{https://doi.org/10.1029/2005GL025621}
+
+Crameri, F. (2018) Scientific colour maps. Zenodo. \url{https://doi.org/10.5281/zenodo.1243862}
+
+Crameri, F. (2021) Lithosphere thickness map. s-Ink, Accessible Science Graphics Collection, version 25.10.2021, CC BY-SA 4.0. \url{https://s-ink.org/lithosphere-thickness-map}
+
+EarthByte (2023) Crustal and lithospheric thickness (Afonso et al. 2019), GPlates Portal. \url{https://www.earthbyte.org/webdav/ftp/earthbyte/gplates_portal/Afonso_etal_lithospheric_thickness_GJI2019/}
+
+Fullea, J., Lebedev, S., Martinec, Z. and Celli, N.L. (2021) WINTERC-G: mapping the upper mantle thermochemical heterogeneity from coupled geophysical-petrological inversion of seismic waveforms, heat flow, surface elevation and gravity satellite data. \emph{Geophysical Journal International} 226(1): 146 to 191.
+
+Fullea, J., Lebedev, S., Martinec, Z. and Celli, N. (2021b) WINTERC-G model files, version 5.4. Zenodo. \url{https://doi.org/10.5281/zenodo.5771863}
+
+GeoNames (2026) Cities with a population over 15,000. \url{https://download.geonames.org/export/dump/}
+
+Natural Earth (2026) Admin 0 countries. \url{https://www.naturalearthdata.com/}
+
+Seton, M., M\"uller, R.D., Zahirovic, S., Williams, S., Wright, N., Cannon, J., Whittaker, J., Matthews, K. and McGirr, R. (2020) A global dataset of present-day oceanic crustal age and seafloor spreading parameters. \emph{Geochemistry, Geophysics, Geosystems} 21: e2020GC009214. \url{https://doi.org/10.1029/2020GC009214}
+
+Turcotte, D.L. and Schubert, G. (2014) \emph{Geodynamics}, third edition. Cambridge: Cambridge University Press.
+
+Wikidata (2026) Wikidata, the free knowledge base, queried via QLever. \url{https://qlever.cs.uni-freiburg.de/wikidata}
+\end{document}

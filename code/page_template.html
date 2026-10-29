@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lithosphere Thickness</title>
+<meta name="description" content="An interactive world map of how thick the Earth's rigid outer shell is beneath every place, from two open global models, with sea-floor age, plates, volcanoes and diamond mines.">
+<meta property="og:title" content="How thick is the ground beneath you?">
+<meta property="og:description" content="The Earth's rigid outer shell averages about {{models.average.all.mean|int}} km thick, from {{ridge.lithoref18_median_young|int}} km at mid-ocean ridges to over 200 km under the oldest continents. Click anywhere to see what lies beneath.">
+<meta property="og:image" content="https://maps.tristanhotham.com/lithosphere-thickness/header.png">
+<meta property="og:url" content="https://maps.tristanhotham.com/lithosphere-thickness/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+/* Pale rock and plum: the accents follow Crameri's acton colour map used for thickness. */
+:root{
+  --bg:#F5F2EF; --panel:#EAE4E1; --fg:#1F1A26; --muted:#665E6C; --rule:#DCD3CF; --card:#FCFAF8; --border:#CABFBC;
+  --hot:#B5446E; --deep:#3D2A57; --cool:#2F6E8C; --sand:#D9B88A;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17141B; --panel:#221E27; --fg:#EFEAF0; --muted:#A99FAE; --rule:#38323F; --card:#1F1B24; --border:#4A4352;
+  --hot:#E77FA4; --deep:#C7B2E6; --cool:#73B6D6; --sand:#D9B88A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17141B; --panel:#221E27; --fg:#EFEAF0; --muted:#A99FAE; --rule:#38323F; --card:#1F1B24; --border:#4A4352;
+  --hot:#E77FA4; --deep:#C7B2E6; --cool:#73B6D6; --sand:#D9B88A; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 18px/1.62 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-x:hidden}
+.wrap{max-width:680px;margin:0 auto;padding-block:28px 64px}
+.wrap .bleed{width:min(1120px,calc(100vw - 32px));margin-left:calc((100% - min(1120px,100vw - 32px))/2);margin-right:0}
+a{color:inherit;text-decoration-color:var(--hot);text-underline-offset:3px}
+.kicker{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.kicker b{background:var(--deep);color:var(--bg);padding:5px 8px;font-weight:500}
+header.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:end;border-bottom:6px double var(--fg);padding-bottom:22px;margin-top:18px}
+h1{font:900 clamp(40px,10vw,84px)/.92 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance}
+h1 span{color:var(--hot)}
+.mark{width:clamp(70px,15vw,120px);height:auto;display:block}
+.dek{grid-column:1/-1;font-size:21px;line-height:1.42;margin:8px 0 0;max-width:50ch}
+.byline{font:400 13px/1.4 var(--mono);color:var(--muted);margin-top:14px}
+h2{font:800 34px/1.04 var(--display);letter-spacing:-.01em;margin:52px 0 10px;text-wrap:balance}
+h2 .n{font:500 13px/1 var(--mono);color:var(--hot);display:block;letter-spacing:.1em;margin-bottom:10px}
+h3{font:600 20px/1.25 var(--display);margin:28px 0 6px}
+p{margin:0 0 16px}
+.lede::first-letter{font:900 72px/.8 var(--display);float:left;margin:6px 10px 0 0;color:var(--hot)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:26px 0 8px}
+.stats div{background:var(--card);padding:14px 12px}
+.stats b{display:block;font:900 clamp(24px,4.6vw,34px)/1 var(--display);color:var(--fg);letter-spacing:-.01em}
+.stats b.h{color:var(--hot)} .stats b.c{color:var(--cool)}
+.stats span{font:400 12px/1.35 var(--mono);color:var(--muted);display:block;margin-top:6px}
+@media (max-width:600px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.figure{margin:26px 0 30px}
+.fig-h{font:600 19px/1.25 var(--display);margin:0 0 4px}
+.fig-sub{font:400 13px/1.45 var(--mono);color:var(--muted);margin:0 0 12px}
+.src{font:400 12px/1.45 var(--mono);color:var(--muted);margin-top:10px}
+.chart{width:100%;position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:var(--mono);fill:var(--fg)}
+.lab{font-size:12px}.lab.m{fill:var(--muted)}.lab.b{font-weight:500}.lab.s{font-size:11px}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font:400 12px/1.45 var(--mono);padding:8px 10px;border-radius:3px;max-width:280px;z-index:1000;transform:translate(-50%,calc(-100% - 12px));display:none}
+.controls{display:flex;gap:8px;align-items:center;margin:0 0 8px;flex-wrap:wrap}
+.scrollrow{display:flex;gap:8px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:4px;max-width:100%;flex-wrap:nowrap}
+.scrollrow>*{flex:0 0 auto}
+.ctl-l{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:2px;white-space:nowrap}
+.btn{font:500 12px/1 var(--mono);background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:8px 10px;cursor:pointer;min-height:36px;white-space:nowrap}
+.btn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn:focus-visible,input:focus-visible,summary:focus-visible,select:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:3px;overflow:hidden;flex:0 0 auto}
+.seg .btn{border:0;border-radius:0;border-right:1px solid var(--border)}
+.seg .btn:last-child{border-right:0}
+.chipbtn{display:inline-flex;align-items:center;gap:6px}
+.chipbtn i{display:inline-block;width:10px;height:10px;border-radius:50%}
+select{font:500 12px/1 var(--mono);background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:8px 6px;min-height:36px}
+.searchbox{position:relative;flex:1 1 260px;min-width:0}
+input[type=search]{font:400 15px/1 var(--mono);background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:10px 11px;min-height:40px;width:100%}
+.suggest{position:absolute;left:0;right:0;top:100%;margin:2px 0 0;padding:0;list-style:none;background:var(--card);border:1px solid var(--border);z-index:1100;font:400 13px/1.3 var(--mono);display:none;max-height:300px;overflow:auto}
+.suggest li{padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--rule)}
+.suggest li span{color:var(--muted)}
+.suggest li[aria-selected="true"],.suggest li:hover{background:var(--panel)}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px;align-items:start}
+@media (max-width:900px){.mapgrid{grid-template-columns:1fr}}
+.side{background:var(--card);border:1px solid var(--border);padding:12px 12px 10px;font:400 13px/1.45 var(--mono)}
+.side h4{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:12px 0 8px}
+.side h4:first-child{margin-top:2px}
+#legend svg{display:block;width:100%;height:auto}
+#lmap{height:620px;border:1px solid var(--border);background:var(--panel);border-radius:2px}
+@media (max-width:600px){#lmap{height:min(62vh,470px)}}
+.leaflet-container{font:400 12px/1.4 var(--mono);background:var(--panel)}
+.leaflet-image-layer.lt{image-rendering:auto}
+.lyrBtn{background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;font:600 12px/1 var(--mono);padding:8px 10px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.lyrBtn[aria-expanded="true"]{background:var(--fg);color:var(--bg)}
+.lyrPanel{background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:3px;padding:10px 12px 8px;margin-top:6px;width:244px;max-height:min(70vh,520px);overflow:auto;box-shadow:0 2px 10px rgba(0,0,0,.15);font:400 12px/1.3 var(--mono)}
+.lyrPanel[hidden]{display:none}
+.lyrPanel .row{margin:0 0 9px}
+.lyrPanel label{display:flex;gap:6px;align-items:center;cursor:pointer;font-weight:600}
+.lyrPanel input[type=range]{width:100%;accent-color:var(--fg)}
+.lyrPanel select{font:400 12px var(--mono);background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:2px;padding:2px 4px;width:100%;min-height:28px}
+.lyrPanel .sub{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:11px;margin-top:3px}
+.lyrPanel .sub span{flex:0 0 58px}
+.lyrPanel .reset{font:400 11px var(--mono);color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.cityL{font:500 11px/1 var(--mono);color:var(--fg);white-space:nowrap;text-shadow:0 0 3px var(--bg),0 0 3px var(--bg),0 0 2px var(--bg);pointer-events:none}
+.cityL i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--fg);margin-right:4px;vertical-align:1px}
+.cityL.s{font-size:10px;font-weight:400}
+.pin{width:18px;height:18px;border-radius:50%;background:var(--hot);border:3px solid #fff;box-shadow:0 0 0 2px var(--fg),0 2px 6px rgba(0,0,0,.4)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--card);color:var(--fg);border-radius:3px}
+.leaflet-bar a,.leaflet-bar a:hover{background:var(--card);color:var(--fg);border-bottom-color:var(--border)}
+.leaflet-control-attribution{background:color-mix(in srgb,var(--card) 85%,transparent)!important;color:var(--muted)}
+.leaflet-control-attribution a{color:var(--fg)}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:500 13px/1.4 var(--mono);color:var(--muted);background:color-mix(in srgb,var(--panel) 80%,transparent);z-index:900;pointer-events:none}
+.mapbox{position:relative}
+.coord{position:absolute;left:8px;bottom:30px;z-index:800;font:500 11px/1.3 var(--mono);background:color-mix(in srgb,var(--card) 88%,transparent);border:1px solid var(--border);padding:4px 7px;border-radius:2px;pointer-events:none}
+#info .big{font:800 30px/1.05 var(--display);margin:4px 0 2px}
+#info .big small{font:400 13px var(--mono);color:var(--muted)}
+#info .where{font:600 16px/1.25 var(--display);margin:0 0 6px}
+#info dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:8px 0}
+#info dt{color:var(--muted)} #info dd{margin:0;text-align:right}
+#info .row2{display:flex;gap:12px;align-items:flex-start}#info .row2 dl{flex:1 1 auto;min-width:0}#info .col{flex:0 0 84px}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;font:400 12px/1.3 var(--mono);color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:14px;height:3px;margin-right:6px;vertical-align:3px}
+.legend i.dot{width:10px;height:10px;border-radius:50%;vertical-align:-1px}
+.legend i.bar{width:12px;height:12px;vertical-align:-2px;opacity:.35}
+.pull{font:600 26px/1.25 var(--display);border-left:6px solid var(--hot);padding:4px 0 4px 18px;margin:30px 0}
+.note{background:var(--panel);border:1px solid var(--rule);padding:14px 16px;font-size:16px;margin:22px 0}
+.note h3{margin-top:0}
+table.t{width:100%;border-collapse:collapse;font:400 13px/1.35 var(--mono)}
+table.t th{text-align:left;font-weight:500;color:var(--muted);border-bottom:2px solid var(--fg);padding:6px 8px 6px 0}
+table.t td{border-bottom:1px solid var(--rule);padding:7px 8px 7px 0;vertical-align:top}
+table.t td.num,table.t th.num{text-align:right;white-space:nowrap}
+table.t tr.go{cursor:pointer}
+table.t tr.go:hover td{background:var(--panel)}
+table.t tr.me td{background:color-mix(in srgb,var(--hot) 14%,transparent)}
+table.t i.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.tablewrap{overflow-x:auto}
+@media (max-width:600px){table.t .wide{display:none}}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0}
+@media (max-width:600px){.cards{grid-template-columns:1fr 1fr;gap:8px}.card{padding:9px 9px;font-size:11px;border-left-width:6px}.card b{font-size:15px}.card .big{font-size:22px}.card .big span{display:none}}
+.card{background:var(--card);border:1px solid var(--border);border-left:8px solid var(--deep);padding:12px 14px;font:400 13px/1.5 var(--mono);cursor:pointer}
+.card:hover{background:var(--panel)}
+.card b{font:600 18px/1.2 var(--display);display:block;margin-bottom:2px}
+.card .big{font:900 28px/1.05 var(--display);margin:6px 0 2px}
+.card .big span{color:var(--muted);font:400 13px/1 var(--mono)}
+.crameri{width:100%;height:auto;display:block;border:1px solid var(--border);background:#fff}
+details{margin:14px 0}
+summary{font:500 13px/1.4 var(--mono);cursor:pointer;color:var(--fg);padding:8px 0}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.cta a{font:500 13px/1 var(--mono);text-decoration:none;border:1px solid var(--fg);padding:11px 14px;border-radius:3px}
+.cta a.p{background:var(--hot);border-color:var(--hot);color:#fff}
+footer{border-top:6px double var(--fg);margin-top:56px;padding-top:16px;font:400 13px/1.55 var(--mono);color:var(--muted)}
+footer p{margin:0 0 10px}
+.theme{position:fixed;right:12px;bottom:12px;z-index:1002}
+@media print{.theme,.controls{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="kicker"><b>Data study</b><span>Earth</span><span>Two open global models</span></div>
+<header class="hero">
+  <h1>How thick is the <span>ground</span> beneath you?</h1>
+  <svg class="mark" viewBox="0 0 120 120" aria-hidden="true"><g id="heroMark"></g></svg>
+  <p class="dek">The Earth wears a rigid shell of rock, the lithosphere, broken into plates that slide over hotter, softer mantle beneath. In some places that shell is thinner than a marathon is long. In others it reaches down more than 200 km. Click anywhere on the map to see how far down it goes beneath your feet.</p>
+</header>
+<div class="byline">Dr Tristan Hotham, Independent researcher · 2026 · Data: LithoRef18 (Afonso et al. 2019); WINTERC-G (Fullea et al. 2021); sea-floor ages (Seton et al. 2020); plates (Bird 2003); Wikidata; GeoNames</div>
+
+<div class="stats">
+  <div><b>{{models.average.all.mean|int}} km</b><span>average thickness of the Earth's lithosphere; the two models agree to within a kilometre</span></div>
+  <div><b class="c">{{ridge.lithoref18_median_young|int}} km</b><span>typical thickness at the mid-ocean ridges, where new plate is made (LithoRef18)</span></div>
+  <div><b class="h">{{diamonds.median_a|int}} km</b><span>typical root beneath the world's diamond mines, thicker than {{diamonds.cont_share_thinner_than_median|pct}} of continental ground</span></div>
+  <div><b>{{lancashire.nearest_deep.km|r10}} km</b><span>from Lancashire to the nearest ground with a root deeper than 200 km in both models</span></div>
+</div>
+
+<p class="lede">Dig down beneath any spot on Earth and you pass first through the crust, then into the mantle. For a while the mantle stays cold and stiff, welded to the crust above it as one rigid layer. Then, somewhere between a few tens and a few hundred kilometres down, it becomes hot enough to creep. That change marks the base of the lithosphere, the bottom of the plate you live on. Under a mid-ocean ridge it comes very close to the surface; under the old heart of a continent it can sit deeper than the distance from London to Birmingham.</p>
+<p>This page started with a beautiful map by Fabio Crameri on <a href="https://s-ink.org/lithosphere-thickness-map">s-Ink</a>, drawn from a model by Clinton Conrad and Carolina Lithgow-Bertelloni (2006). The s-Ink download holds only images, not the numbers behind them, and I could not find an open copy of that grid. So I built my own map from two newer open models that do publish their numbers: LithoRef18 (Afonso and colleagues, 2019) and WINTERC-G (Fullea and colleagues, 2021). Where they agree, the picture is solid; where they disagree, the map lets you see it.</p>
+
+<h2 id="map"><span class="n">01 · The map</span>The base of the plate, everywhere</h2>
+<p>Colours show how far down the base of the lithosphere lies: pale for thin, deep plum for thick. By default the map shows the average of the two models. Switch to either model alone, to where they disagree, to the age of the sea floor, or to the thickness of the crust. Search a place or click anywhere for a cross-section of the ground beneath it.</p>
+<div class="bleed">
+<div class="controls"><div class="searchbox"><input type="search" id="q" placeholder="Search a city or town, e.g. Preston, Johannesburg, Reykjavik" autocomplete="off" aria-label="Search a place" aria-autocomplete="list" aria-controls="sug"><ul class="suggest" id="sug" role="listbox"></ul></div></div>
+<div class="scrollrow" role="group" aria-label="What the map shows">
+  <span class="ctl-l">Show</span>
+  <div class="seg" id="modeSeg"><button class="btn" data-m="a" aria-pressed="true">Average</button><button class="btn" data-m="l">LithoRef18</button><button class="btn" data-m="w">WINTERC-G</button><button class="btn" data-m="d">Disagreement</button><button class="btn" data-m="age">Sea-floor age</button><button class="btn" data-m="crust">Crust</button></div>
+</div>
+<div class="scrollrow" role="group" aria-label="Map overlays">
+  <span class="ctl-l">Add</span>
+  <button class="btn chipbtn" id="tgPlates" aria-pressed="true"><i style="background:#E8590C"></i>Plate boundaries</button>
+  <button class="btn chipbtn" id="tgVolc" aria-pressed="false"><i style="background:#C92A2A"></i>Volcanoes</button>
+  <button class="btn chipbtn" id="tgDiam" aria-pressed="false"><i style="background:#1C7ED6"></i>Diamond mines</button>
+  <button class="btn chipbtn" id="tgCont" aria-pressed="false"><i style="background:transparent;border:2px solid currentColor;border-radius:0"></i>200 km contour</button>
+</div>
+<div class="mapgrid">
+  <div class="mapbox"><div id="lmap" role="application" aria-label="Map of lithosphere thickness"></div><div class="coord" id="coord" hidden></div><div class="loading" id="loading">Loading the models…</div></div>
+  <div class="side">
+    <h4 id="legTitle">Depth to the base of the lithosphere</h4>
+    <div id="legend"></div>
+    <div class="src" id="legNote"></div>
+    <h4>Beneath this spot</h4>
+    <div id="info"><p class="src" style="margin:0">Click the map or search a place.</p></div>
+  </div>
+</div>
+<p class="src">Thickness: LithoRef18 (2 degree grid, smoothed for display) and WINTERC-G (triangular grid about 225 km apart, interpolated). Sea-floor age: Seton et al. (2020). Plate boundaries: Bird (2003). Volcanoes: Wikidata items with a Smithsonian Global Volcanism Program number. Diamond mines: Wikidata. Base map tiles © Esri.</p>
+</div>
+
+<h2><span class="n">02 · Old hearts</span>The deep roots of the continents</h2>
+<p>The thickest lithosphere sits under the cratons, the oldest and most stable cores of the continents, many of them more than 2.5 billion years old. Geologists think these regions owe their survival to deep, cold, chemically depleted roots, sometimes called keels, which are buoyant enough to resist being dragged back into the mantle. In both models the cratons stand out as islands of deep plum: across {{cratons_summary.n|int}} representative points, the median depth to the base is {{cratons_summary.median_l|int}} km in LithoRef18 and {{cratons_summary.median_w|int}} km in WINTERC-G, and {{cratons_summary.n_over_150_both|int}} of the {{cratons_summary.n|int}} are deeper than 150 km in both.</p>
+<p>The exception proves the rule. The eastern North China craton is ancient at the surface but sits on lithosphere only about {{cratons.13.a|int}} km thick here. Geologists widely describe it as a craton that lost much of its root, probably during the last 200 million years. Its big cities, including Tianjin, are among the thinnest-floored of any city of a million people. Click a card to fly there.</p>
+<div class="cards" id="cratonCards"></div>
+
+<h2><span class="n">03 · Born thin</span>How the ocean floor thickens with age</h2>
+<p>Oceanic plates are made at mid-ocean ridges, where hot mantle rises, melts and freezes into new sea floor. As the new plate moves away it cools from above, and the cold, rigid layer grows downwards. Simple cooling theory says its thickness should grow with the square root of its age: four times as old, twice as thick. On sea floor younger than 2 million years LithoRef18 puts the base at a median of {{ridge.lithoref18_median_young|int}} km, rising to {{ridge.lithoref18_median_old|int}} km on sea floor older than 150 million years. Across all the ocean, its thickness tracks the square root of age with a correlation of {{ocean_fit.lithoref18.r_sqrt_age_all_ocean|f2}}.</p>
+<p>WINTERC-G tells the same story more quietly, from {{ridge.winterc_median_young|int}} to {{ridge.winterc_median_old|int}} km, partly because its nodes are about 225 km apart, wider than the thin strip along a ridge. Both curves flatten for the oldest sea floor, as plate-cooling models predict. The oldest crust in the age grid, about {{ridge.oldest.age|int}} million years old, lies in the eastern Mediterranean.</p>
+<div class="figure">
+  <p class="fig-h">Lithosphere thickness against the age of the sea floor</p>
+  <p class="fig-sub">Median of ocean cells in each age band, with the middle half shaded. Dashed: textbook half-space cooling, 2.32 times the square root of (thermal diffusivity times age), with diffusivity 0.000001 m² per second.</p>
+  <div class="chart" id="ageChart"></div>
+  <div class="legend"><span><i style="background:var(--hot);height:3px"></i>LithoRef18</span><span><i style="background:var(--cool);height:3px"></i>WINTERC-G</span><span><i style="background:var(--muted);height:2px"></i>half-space cooling (dashed)</span></div>
+</div>
+
+<h2><span class="n">04 · Fire and ice</span>Where volcanoes and diamonds sit</h2>
+<p>Thin lithosphere and volcanoes go together. Most volcanoes grow where plates pull apart or where one dives beneath another, and in both settings the rigid lid is thin. Of the {{volcanoes.n|int}} volcanoes with a Smithsonian Global Volcanism Program number in Wikidata, {{volcanoes.share_under_100|pct}} stand on lithosphere less than 100 km thick (averaging the two models), and only {{volcanoes.share_over_200|pct}} on ground deeper than 200 km. Their median is {{volcanoes.median_a|int}} km, well below the continental median of {{continent_median_a|int}} km.</p>
+<p>Diamonds are the opposite. They form in the mantle at depths of roughly 150 km or more, where pressure is high enough, and survive only where a thick, cold root keeps them stable. They reach the surface in rare, fast eruptions of kimberlite. Of the {{diamonds.n|int}} diamond mines in Wikidata with coordinates, {{diamonds.share_over_150|pct}} sit on lithosphere more than 150 km thick. Their median root, {{diamonds.median_a|int}} km, is deeper than {{diamonds.cont_share_thinner_than_median|pct}} of all continental ground. That is the pattern prospectors call Clifford's rule: look for diamonds on the old cratons.</p>
+<div class="figure">
+  <p class="fig-h">How deep the root goes: continents, volcanoes, diamond mines</p>
+  <p class="fig-sub">Share in each 20 km band of the average of the two models. Continents: area without oceanic crust in the age grid, so it includes continental shelves.</p>
+  <div class="chart" id="distChart"></div>
+</div>
+<p class="src">Wikidata coverage of mines is thin and uneven ({{diamonds.n|int}} sites, mostly large or famous ones), and some volcano entries are submarine. The pattern is clear, but the exact shares would shift with a fuller list.</p>
+
+<h2><span class="n">05 · Close to home</span>The UK and Lancashire</h2>
+<p>Britain is not a craton. Its rocks were stitched together from several older fragments, stretched when the Atlantic opened and warmed by the volcanoes of the Hebrides some 60 million years ago. Its lithosphere is middling: the UK averages {{uk.country.average_mean|int}} km across the two models, {{uk.rank_thickest|ord}} thickest of the {{countries.n_big|int}} countries with at least 20,000 km² of land, close to the continental median of {{continent_median_a|int}} km. Thickness falls to the north and west.</p>
+<p>Under Lancashire the base lies about {{lancashire.l|int}} km down in LithoRef18 and {{lancashire.w|int}} km in WINTERC-G, of which roughly {{uk_places.10.crust|int}} km is crust. The nearest ground where both models put the base below 200 km is in {{lancashire.nearest_deep.country}}, about {{lancashire.nearest_deep.km|r10}} km away: the edge of the Baltic Shield, one of Europe's ancient hearts.</p>
+<div class="figure">
+  <p class="fig-h">Depth to the base of the lithosphere under UK towns</p>
+  <p class="fig-sub">Each row: LithoRef18 and WINTERC-G, joined by a line. The shaded band is the middle half of the world's continental ground.</p>
+  <div class="chart" id="ukChart"></div>
+  <div class="legend"><span><i class="dot" style="background:var(--hot)"></i>LithoRef18</span><span><i class="dot" style="background:var(--cool)"></i>WINTERC-G</span></div>
+</div>
+
+<h2><span class="n">06 · League table</span>Thickest and thinnest countries</h2>
+<p>Averaged across their land, the countries on the East European craton come out thickest, led by {{countries.thickest.0.country}} ({{countries.thickest.0.average_mean|int}} km). The thinnest are along young rifts and plate boundaries, led by {{countries.thinnest.0.country}} ({{countries.thinnest.0.average_mean|int}} km), at the mouth of the Red Sea where Africa and Arabia are pulling apart. Click a row to see it on the map.</p>
+<div class="controls" id="rankSeg"><div class="seg"><button class="btn" data-k="thick" aria-pressed="true">Thickest</button><button class="btn" data-k="thin">Thinnest</button><button class="btn" data-k="all">All {{countries.n_big|int}}</button></div></div>
+<div class="tablewrap"><table class="t" id="rank"></table></div>
+<p class="src">Area-weighted means over 0.25 degree cells inside simplified Natural Earth outlines, countries with at least 20,000 km² in the grid. WINTERC-G stops at 300 km, so the Baltic states may be thicker than shown.</p>
+
+<h2><span class="n">07 · Two models</span>Where the experts' maps disagree</h2>
+<p>Nobody can drill to the base of the lithosphere. Every map of it is a model, built from how seismic waves travel, how heat flows out of the ground, how high the land stands and how gravity varies. LithoRef18 and WINTERC-G use overlapping kinds of evidence but different methods, and they agree on the broad pattern: a correlation of {{agree.r_all|f2}} across the globe, with a median difference of {{agree.median_absdiff|int}} km. They differ by more than 50 km over {{agree.share_diff_over_50|pct}} of the Earth's surface.</p>
+<p>The biggest arguments are under the East European plain, where WINTERC-G reaches its 300 km ceiling, and under Tibet, where WINTERC-G finds a thick root of about {{contrasts.3.w|int}} km and LithoRef18 only {{contrasts.3.l|int}} km. Geologists have long debated Tibet's deep structure, so this is honest uncertainty, not an error in either map. Choose "Disagreement" above the map to see where the two part company.</p>
+<div class="figure">
+  <p class="fig-h">The two models, cell by cell</p>
+  <p class="fig-sub">Share of the Earth's surface in each 10 km by 10 km box. On the diagonal the models agree.</p>
+  <div class="chart" id="agreeChart"></div>
+</div>
+<h3>The map that started this</h3>
+<p>Fabio Crameri's map on s-Ink shows Conrad and Lithgow-Bertelloni's 2006 model, which set oceanic thickness from the square root of sea-floor age and continental thickness from seismic tomography, with 100 km as the boundary between the two. It is reproduced here under its CC BY-SA 4.0 licence. Its broad pattern matches the two newer models: the same cratons, the same thin ridges.</p>
+<figure style="margin:16px 0 26px"><img class="crameri" src="data/crameri_lithosphere_thickness.jpg" alt="Fabio Crameri's world map of lithosphere thickness in shades from pale pink to deep purple, showing thick continental roots and thin mid-ocean ridges" width="1400" height="655"><figcaption class="src">Graphic by Fabio Crameri, based on data by Conrad and Lithgow-Bertelloni (2006), from the open-access s-Ink repository (s-ink.org), CC BY-SA 4.0. Shown smaller, on a white background.</figcaption></figure>
+
+<div class="note">
+<h3>Method and caveats</h3>
+<p><b>What "thickness" means.</b> The lithosphere has no sharp floor. Rock gets steadily hotter and weaker with depth, and different methods put the boundary in different places: where temperature reaches a set value, where seismic waves slow, or where rock starts to flow. The two models here use thermal definitions. Read every number as an estimate with an uncertainty of tens of kilometres.</p>
+<p><b>LithoRef18.</b> Afonso and colleagues' global reference model (Geophysical Journal International, 2019), from the source file on the EarthByte GPlates Portal: {{meta.lithoref18_points|int}} cells of 2 degrees. Thickness is the depth of the lithosphere's base below the surface (base minus elevation). For the map it is smoothed to 0.25 degree cells by bilinear interpolation, which cannot add detail the model does not have.</p>
+<p><b>WINTERC-G.</b> Fullea, Lebedev, Martinec and Celli's thermochemical model (Geophysical Journal International, 2021), version 5.4 on Zenodo: the depth of the thermal base of the lithosphere at {{meta.winterc_nodes|int}} nodes about 225 km apart, from surface waves, heat flow, elevation and satellite gravity. I interpolated it to 0.25 degree cells by inverse distance from the four nearest nodes. Its values run from 45 to 300 km; {{models.winterc.max.n_at_max|int}} nodes sit at the 300 km ceiling.</p>
+<p><b>Average and disagreement.</b> The default map is the simple mean of the two. Disagreement is WINTERC-G minus LithoRef18.</p>
+<p><b>Sea floor.</b> Ages from Seton et al. (2020), 6 arc-minute grid, averaged into 0.25 degree cells. Cells without oceanic crust count as continental, which includes continental shelves and a few marginal seas. Shares of the surface are area-weighted.</p>
+<p><b>Points.</b> Volcanoes: {{volcanoes.n|int}} Wikidata items with a Smithsonian Global Volcanism Program volcano number. Diamond mines: {{diamonds.n|int}} Wikidata items that are diamond mines or list diamond as their product. Cities: GeoNames places of 100,000 people or more ({{meta.cities_page|int}}). Craton points are approximate centres chosen from general geological maps, not boundaries.</p>
+<p><b>What this is not.</b> These are coarse global models. They cannot resolve a single valley or town, and neither is the final word. Local seismic studies may find quite different values for a given place.</p>
+</div>
+
+<div class="cta"><a class="p" href="https://doi.org/10.5281/zenodo.23782261">Read the paper</a><a href="https://github.com/Tristan-Hotham/lithosphere-thickness">Data and code</a><a href="https://blog.tristanhotham.com/2026/10/29/lithosphere-thickness/">Blog post</a></div>
+
+<details><summary>Sources and licences</summary>
+<p class="src">LithoRef18: Afonso, J.C., Salajegheh, F., Szwillus, W., Ebbing, J. and Gaina, C. (2019) A global reference model of the lithosphere and upper mantle from joint inversion and analysis of multiple data sets. Geophysical Journal International 217(3): 1602 to 1628, https://doi.org/10.1093/gji/ggz094 . File from the EarthByte GPlates Portal (EarthByte FTP area licensed CC BY 4.0).<br>
+WINTERC-G: Fullea, J., Lebedev, S., Martinec, Z. and Celli, N.L. (2021) WINTERC-G: mapping the upper mantle thermochemical heterogeneity. Geophysical Journal International 226(1): 146 to 191. Model files: https://doi.org/10.5281/zenodo.5771863 (CC BY 4.0).<br>
+Sea-floor age: Seton, M. et al. (2020) A global dataset of present-day oceanic crustal age and seafloor spreading parameters. Geochemistry, Geophysics, Geosystems, https://doi.org/10.1029/2020GC009214 . EarthByte, CC BY 4.0.<br>
+Plate boundaries: Bird, P. (2003) An updated digital model of plate boundaries. Geochemistry, Geophysics, Geosystems 4(3): 1027, via github.com/fraxen/tectonicplates (Hugo Ahlenius, Nordpil; ODC-BY 1.0).<br>
+Original map: Fabio Crameri, s-Ink (s-ink.org/lithosphere-thickness-map), based on Conrad, C.P. and Lithgow-Bertelloni, C. (2006) Influence of continental roots and asthenosphere on plate-mantle coupling. Geophysical Research Letters 33: L05312, https://doi.org/10.1029/2005GL025621 . CC BY-SA 4.0.<br>
+Colour maps: Crameri, F. Scientific colour maps (acton, vik, batlow, lajolla), https://doi.org/10.5281/zenodo.1243862 (MIT licence).<br>
+Volcanoes and diamond mines: Wikidata (CC0). Cities: GeoNames (CC BY 4.0). Country outlines: Natural Earth (public domain). Base map, hill shading and label tiles © Esri, HERE, Garmin, USGS, NGA, Maxar, Earthstar Geographics, © OpenStreetMap contributors, and the GIS user community.</p>
+</details>
+
+<footer>
+  <p>Dr Tristan Hotham, Independent researcher. ORCID 0000-0003-4931-9349. Cite as: Hotham, T. (2026) How thick is the ground beneath you? Lithosphere thickness from two open global models. https://doi.org/10.5281/zenodo.23782261</p>
+  <p>I wrote the text, with drafting and editing assistance from Claude (Anthropic), which also helped prepare the analysis code. I reviewed and checked all text and results.</p>
+  <p>Text, figures and derived data: CC BY-SA 4.0. Code: MIT. Other studies: <a href="https://maps.tristanhotham.com/british-earthquakes/">Britain's earthquakes</a>, <a href="https://maps.tristanhotham.com/sea-level/">Sea level</a>, <a href="https://blog.tristanhotham.com/">all posts</a>.</p>
+</footer>
+</div>
+<div class="tip" id="tip"></div>
+<button class="btn theme" id="theme" aria-label="Toggle dark mode">◐</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const R = /*RESULTS*/;
+const LUT = /*LUTS*/;
+const NS = "http://www.w3.org/2000/svg";
+const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+const fmt = n => n == null ? "n/a" : Math.round(n).toLocaleString("en-GB");
+const pc = (x, d = 0) => (x * 100).toFixed(d) + "%";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const tip = document.getElementById("tip");
+function showTip(h, x, y) { tip.innerHTML = h; tip.style.display = "block"; const w = tip.offsetWidth; x = Math.max(w / 2 + 8, Math.min(innerWidth - w / 2 - 8, x)); tip.style.left = x + scrollX + "px"; tip.style.top = y + scrollY + "px"; }
+function hideTip() { tip.style.display = "none"; }
+document.addEventListener("click", hideTip);
+const isDark = () => { const r = document.documentElement; return r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; };
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const small = () => innerWidth < 900;
+const redraws = [];
+function resp(box, render) { let last = 0; const go = force => { const w = Math.max(280, Math.round(box.clientWidth)); if (!force && Math.abs(w - last) < 4) return; last = w; box.innerHTML = ""; render(w, w < 560); }; new ResizeObserver(() => go()).observe(box); go(); redraws.push(() => go(true)); }
+const lbl = (svg, x, y, s, cls = "lab", anchor = "start") => { const t = el("text", { x, y, class: cls, "text-anchor": anchor }, svg); t.textContent = s; return t; };
+const hex2rgb = h => [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+const PAL = {}; for (const k in LUT) { const s = LUT[k]; PAL[k] = []; for (let i = 0; i < s.length; i += 6) PAL[k].push(hex2rgb(s.slice(i, i + 6))); }
+// colour scales: thickness 0 to 300 km (acton, reversed so thin is pale), difference -100 to 100 (vik), age 0 to 200 Myr (batlow), crust 0 to 70 km (lajolla, reversed)
+const SCALE = {
+  a: { pal: "acton", lo: 0, hi: 300, rev: true, unit: "km", title: "Depth to the base of the lithosphere", note: "Average of LithoRef18 and WINTERC-G.", ticks: [0, 50, 100, 150, 200, 250, 300] },
+  l: { pal: "acton", lo: 0, hi: 300, rev: true, unit: "km", title: "Depth to the base of the lithosphere", note: "LithoRef18 (Afonso et al. 2019), 2 degree model smoothed for display.", ticks: [0, 50, 100, 150, 200, 250, 300] },
+  w: { pal: "acton", lo: 0, hi: 300, rev: true, unit: "km", title: "Depth to the base of the lithosphere", note: "WINTERC-G (Fullea et al. 2021), nodes about 225 km apart. Its range is 45 to 300 km.", ticks: [0, 50, 100, 150, 200, 250, 300] },
+  d: { pal: "vik", lo: -100, hi: 100, rev: false, unit: "km", title: "WINTERC-G minus LithoRef18", note: "Red: WINTERC-G is deeper. Blue: LithoRef18 is deeper. White: they agree.", ticks: [-100, -50, 0, 50, 100] },
+  age: { pal: "batlow", lo: 0, hi: 200, rev: false, unit: "Myr", title: "Age of the sea floor", note: "Seton et al. (2020). Grey: no oceanic crust. Ages over 200 million years share the top colour.", ticks: [0, 50, 100, 150, 200] },
+  crust: { pal: "lajolla", lo: 0, hi: 70, rev: true, unit: "km", title: "Thickness of the crust", note: "LithoRef18: from the surface to the Moho.", ticks: [0, 10, 20, 30, 40, 50, 60, 70] }
+};
+function colourOf(mode, v) {
+  const S = SCALE[mode], P = PAL[S.pal]; let t = (v - S.lo) / (S.hi - S.lo); t = Math.max(0, Math.min(1, t)); if (S.rev) t = 1 - t;
+  return P[Math.round(t * (P.length - 1))];
+}
+
+/* hero mark: a cut through the ground, crust over lithospheric mantle over asthenosphere */
+(function () {
+  const g = document.getElementById("heroMark"); const P = PAL.acton;
+  const prof = x => 34 + 46 * Math.exp(-Math.pow((x - 74) / 22, 2)) + 10 * Math.exp(-Math.pow((x - 18) / 10, 2));
+  el("rect", { x: 2, y: 2, width: 116, height: 116, rx: 3, fill: `rgb(${P[61].join(",")})` }, g);
+  let d = "M2 16"; for (let x = 2; x <= 118; x += 2) d += ` L${x} ${16 + prof(x) * 1.15}`; d += " L118 16 Z";
+  el("path", { d, fill: `rgb(${P[10].join(",")})` }, g);
+  let c = "M2 16"; for (let x = 2; x <= 118; x += 2) c += ` L${x} ${30 + 0.12 * prof(x)}`; c += " L118 16 Z";
+  el("path", { d: c, fill: `rgb(${P[37].join(",")})` }, g);
+  el("rect", { x: 2, y: 2, width: 116, height: 14, fill: "#D9B88A" }, g);
+})();
+
+/* == grids == */
+const NX = 1440, NY = 720, RES = 0.25, KT = 1.25, KA = 1.4;
+let G = null, PTS = null;
+function loadImg(src) { return new Promise((ok, bad) => { const im = new Image(); im.onload = () => ok(im); im.onerror = bad; im.src = src; }); }
+async function loadGrids() {
+  const [a, b] = await Promise.all([loadImg("data/grid_a.png"), loadImg("data/grid_b.png")]);
+  const cv = document.createElement("canvas"); cv.width = NX; cv.height = NY; const ctx = cv.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(a, 0, 0); const da = ctx.getImageData(0, 0, NX, NY).data; ctx.clearRect(0, 0, NX, NY); ctx.drawImage(b, 0, 0); const db = ctx.getImageData(0, 0, NX, NY).data;
+  const n = NX * NY, l = new Float32Array(n), w = new Float32Array(n), age = new Float32Array(n), crust = new Float32Array(n), plate = new Int16Array(n), ctry = new Int16Array(n);
+  for (let i = 0; i < n; i++) {
+    l[i] = (da[i * 4] - 1) * KT; w[i] = (da[i * 4 + 1] - 1) * KT; age[i] = da[i * 4 + 2] ? (da[i * 4 + 2] - 1) * KA : NaN;
+    plate[i] = db[i * 4] - 1; ctry[i] = db[i * 4 + 1] - 1; crust[i] = db[i * 4 + 2] - 1;
+  }
+  G = { l, w, age, crust, plate, ctry };
+}
+const idx = (lat, lon) => { const r = Math.min(NY - 1, Math.max(0, Math.floor((90 - lat) / RES))); const c = ((Math.floor((lon + 180) / RES) % NX) + NX) % NX; return r * NX + c; };
+function bil(arr, lat, lon) {
+  const fx = (lon + 180) / RES - .5, fy = Math.min(NY - 1.001, Math.max(0, (90 - lat) / RES - .5));
+  let x0 = Math.floor(fx), y0 = Math.floor(fy); const tx = fx - x0, ty = fy - y0; const x1 = ((x0 + 1) % NX + NX) % NX; x0 = (x0 % NX + NX) % NX;
+  const g = (y, x) => arr[y * NX + x];
+  return g(y0, x0) * (1 - tx) * (1 - ty) + g(y0, x1) * tx * (1 - ty) + g(y0 + 1, x0) * (1 - tx) * ty + g(y0 + 1, x1) * tx * ty;
+}
+const valOf = (mode, i) => mode === "a" ? (G.l[i] + G.w[i]) / 2 : mode === "l" ? G.l[i] : mode === "w" ? G.w[i] : mode === "d" ? G.w[i] - G.l[i] : mode === "age" ? G.age[i] : G.crust[i];
+
+/* == the map == */
+const S = { mode: "a", plates: true, volc: false, diam: false, cont: false, place: null };
+const lmap = L.map("lmap", { minZoom: 1, maxZoom: 9, worldCopyJump: false, maxBounds: [[-85, -230], [88, 230]], zoomSnap: .5 }).setView([28, 10], 2);
+const LY = { base: "plain", hills: true, hillK: 55, labels: false, labelK: 85, outlines: true, names: true, nameLvl: 1, colour: 85 };
+const LYDEF = { ...LY };
+try { Object.assign(LY, JSON.parse(localStorage.getItem("litho_layers") || "{}")); } catch (e) {}
+const saveLY = () => { try { localStorage.setItem("litho_layers", JSON.stringify(LY)); } catch (e) {} };
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
+const ESRI_ATT = 'Tiles &copy; Esri and partners (see sources)';
+lmap.createPane("hills"); lmap.getPane("hills").style.zIndex = 250; lmap.getPane("hills").style.pointerEvents = "none";
+lmap.createPane("colour"); lmap.getPane("colour").style.zIndex = 300; lmap.getPane("colour").style.pointerEvents = "none";
+lmap.createPane("lines"); lmap.getPane("lines").style.zIndex = 420; lmap.getPane("lines").style.pointerEvents = "none";
+lmap.createPane("labels"); lmap.getPane("labels").style.zIndex = 450; lmap.getPane("labels").style.pointerEvents = "none";
+const lineRenderer = L.canvas({ pane: "lines", padding: .3 });
+let base, labels, hills;
+function setTiles() {
+  [base, labels, hills].forEach(l => { if (l) lmap.removeLayer(l); });
+  const t = isDark() ? "Dark" : "Light";
+  const url = LY.base === "relief" ? ESRI + "World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}" : LY.base === "satellite" ? ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}" : `${ESRI}Canvas/World_${t}_Gray_Base/MapServer/tile/{z}/{y}/{x}`;
+  base = L.tileLayer(url, { maxZoom: 16, maxNativeZoom: LY.base === "relief" ? 13 : 16, attribution: ESRI_ATT }).addTo(lmap);
+  hills = L.tileLayer(ESRI + "Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16, maxNativeZoom: 16, pane: "hills" });
+  labels = L.tileLayer(`${ESRI}Canvas/World_${t}_Gray_Reference/MapServer/tile/{z}/{y}/{x}`, { maxZoom: 16, pane: "labels" });
+  applyLayers();
+}
+let overlay = null, outlineL = L.layerGroup(), cityL = L.layerGroup(), plateL = L.layerGroup(), volcL = L.layerGroup(), diamL = L.layerGroup(), contL = L.layerGroup();
+function applyLayers() {
+  if (!base) return;
+  if (overlay) overlay.setOpacity(LY.colour / 100);
+  if (LY.hills) { hills.addTo(lmap); hills.setOpacity(LY.hillK / 100); } else lmap.removeLayer(hills);
+  if (LY.labels) { labels.addTo(lmap); labels.setOpacity(LY.labelK / 100); } else lmap.removeLayer(labels);
+  if (LY.outlines) outlineL.addTo(lmap); else lmap.removeLayer(outlineL);
+  if (LY.names) cityL.addTo(lmap); else lmap.removeLayer(cityL);
+  cityNames();
+}
+function cityNames() {
+  cityL.clearLayers(); if (!LY.names || !PTS) return;
+  const z = lmap.getZoom(), bb = lmap.getBounds().pad(.05);
+  const minPop = [[2.5, 8e6], [3, 4e6], [4, 1.5e6], [5, 6e5], [6, 2.5e5], [99, 1e5]].find(([zz]) => z < zz + (LY.nameLvl === 2 ? 1.5 : LY.nameLvl === 0 ? -1 : 0))[1] * (LY.nameLvl === 0 ? 2 : 1);
+  const boxes = []; let n = 0;
+  for (const c of PTS.cities) {
+    if (c[4] < minPop) break;
+    if (!bb.contains([c[2], c[3]])) continue;
+    const pt = lmap.latLngToContainerPoint([c[2], c[3]]), big = c[4] >= 2e6;
+    const bx = [pt.x - 4, pt.y - 8, pt.x + 10 + c[0].length * (big ? 6.9 : 6.3), pt.y + 7];
+    if (boxes.some(o => bx[0] < o[2] && bx[2] > o[0] && bx[1] < o[3] && bx[3] > o[1])) continue;
+    boxes.push(bx); L.marker([c[2], c[3]], { interactive: false, keyboard: false, pane: "labels", icon: L.divIcon({ className: "cityL" + (big ? "" : " s"), html: `<i></i>${esc(c[0])}`, iconSize: null, iconAnchor: [3, 6] }) }).addTo(cityL);
+    if (++n >= 200) break;
+  }
+}
+lmap.on("zoomend moveend", cityNames);
+(function layerControl() {
+  const Ctl = L.Control.extend({ options: { position: "topright" }, onAdd() {
+    const d = L.DomUtil.create("div"); L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d);
+    d.innerHTML = `<button class="lyrBtn" aria-expanded="false" aria-controls="lyrPanel">Map layers</button>
+<div class="lyrPanel" id="lyrPanel" hidden>
+ <div class="row"><label for="lyBase" style="font-weight:600">Base map</label><div class="sub"><select id="lyBase" aria-label="Base map"><option value="plain">Plain grey</option><option value="relief">Shaded relief</option><option value="satellite">Satellite</option></select></div></div>
+ <div class="row"><label><input type="checkbox" id="lyHills"> Hills and mountains</label><div class="sub"><span>strength</span><input type="range" id="lyHillK" min="10" max="100" step="5" aria-label="Hill shading strength"></div></div>
+ <div class="row"><label><input type="checkbox" id="lyOutlines"> Coasts and borders</label></div>
+ <div class="row"><label><input type="checkbox" id="lyNames"> City names</label><div class="sub"><span>how many</span><select id="lyNameLvl" aria-label="How many city names"><option value="0">Biggest only</option><option value="1">Some</option><option value="2">Lots</option></select></div></div>
+ <div class="row"><label><input type="checkbox" id="lyLabels"> Map labels and roads</label><div class="sub"><span>strength</span><input type="range" id="lyLabelK" min="20" max="100" step="5" aria-label="Map label strength"></div></div>
+ <div class="row"><label style="font-weight:600">Colour</label><div class="sub"><span>strength</span><input type="range" id="lyColour" min="20" max="100" step="5" aria-label="Colour strength"></div></div>
+ <button class="reset" id="lyReset">Reset layers</button>
+</div>`;
+    return d; } });
+  lmap.addControl(new Ctl());
+  const q = id => document.getElementById(id), btn = lmap.getContainer().querySelector(".lyrBtn"), pan = q("lyrPanel");
+  btn.onclick = () => { const o = pan.hidden; pan.hidden = !o; btn.setAttribute("aria-expanded", o); };
+  const sync = () => { q("lyBase").value = LY.base; q("lyHills").checked = LY.hills; q("lyHillK").value = LY.hillK; q("lyLabels").checked = LY.labels; q("lyLabelK").value = LY.labelK; q("lyOutlines").checked = LY.outlines; q("lyNames").checked = LY.names; q("lyNameLvl").value = LY.nameLvl; q("lyColour").value = LY.colour; };
+  const on = (id, ev, f, retile) => q(id).addEventListener(ev, e => { f(e.target); saveLY(); retile ? setTiles() : applyLayers(); });
+  on("lyBase", "change", t => LY.base = t.value, true);
+  on("lyHills", "change", t => LY.hills = t.checked); on("lyHillK", "input", t => { LY.hillK = +t.value; LY.hills = q("lyHills").checked = true; });
+  on("lyLabels", "change", t => LY.labels = t.checked); on("lyLabelK", "input", t => { LY.labelK = +t.value; LY.labels = q("lyLabels").checked = true; });
+  on("lyOutlines", "change", t => LY.outlines = t.checked);
+  on("lyNames", "change", t => LY.names = t.checked); on("lyNameLvl", "change", t => { LY.nameLvl = +t.value; LY.names = q("lyNames").checked = true; });
+  on("lyColour", "input", t => LY.colour = +t.value);
+  q("lyReset").onclick = () => { Object.assign(LY, LYDEF); saveLY(); sync(); setTiles(); };
+  sync();
+})();
+setTiles();
+
+/* colour overlay: our own canvas, reprojected to Web Mercator */
+const CanvasOverlay = L.ImageOverlay.extend({ _initImage: function () { const e = this._image = this._url; L.DomUtil.addClass(e, "leaflet-image-layer"); L.DomUtil.addClass(e, "lt"); if (this._zoomAnimated) L.DomUtil.addClass(e, "leaflet-zoom-animated"); e.onselectstart = L.Util.falseFn; e.onmousemove = L.Util.falseFn; } });
+const LAT_TOP = 84, LAT_BOT = -80;
+const mercY = lat => Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360));
+const MROWS = (() => { const y0 = mercY(LAT_TOP), y1 = mercY(LAT_BOT), H = Math.round(NX / (2 * Math.PI) * (y0 - y1)), rows = new Int32Array(H); for (let y = 0; y < H; y++) { const my = y0 - (y + .5) / H * (y0 - y1), lat = (2 * Math.atan(Math.exp(my)) - Math.PI / 2) * 180 / Math.PI; rows[y] = Math.min(NY - 1, Math.floor((90 - lat) / RES)); } return rows; })();
+const merc = document.createElement("canvas"); merc.width = NX; merc.height = MROWS.length;
+overlay = new CanvasOverlay(merc, [[LAT_BOT, -180], [LAT_TOP, 180]], { opacity: LY.colour / 100, interactive: false, pane: "colour" }).addTo(lmap);
+function render() {
+  if (!G) return;
+  const ctx = merc.getContext("2d"), img = ctx.createImageData(NX, MROWS.length), d = img.data, mode = S.mode;
+  const none = isDark() ? [70, 66, 74] : [214, 210, 206];
+  for (let y = 0; y < MROWS.length; y++) {
+    const r0 = MROWS[y] * NX, o0 = y * NX * 4;
+    for (let x = 0; x < NX; x++) {
+      const v = valOf(mode, r0 + x), o = o0 + x * 4;
+      if (Number.isNaN(v)) { d[o] = none[0]; d[o + 1] = none[1]; d[o + 2] = none[2]; d[o + 3] = 150; continue; }
+      const c = colourOf(mode, v); d[o] = c[0]; d[o + 1] = c[1]; d[o + 2] = c[2]; d[o + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  drawLegend(); if (S.place) drawInfo();
+}
+function drawLegend() {
+  const S0 = SCALE[S.mode], box = document.getElementById("legend"); box.innerHTML = "";
+  const W = 280, svg = el("svg", { viewBox: `-4 0 ${W + 26} 44`, role: "img", "aria-label": S0.title }, box);
+  const P = PAL[S0.pal], n = 64;
+  for (let i = 0; i < n; i++) { let t = i / (n - 1); const v = S0.lo + t * (S0.hi - S0.lo); const c = colourOf(S.mode, v); el("rect", { x: 6 + i * (W - 12) / n, y: 4, width: (W - 12) / n + .6, height: 16, fill: `rgb(${c.join(",")})` }, svg); }
+  for (const t of S0.ticks) { const x = 6 + (t - S0.lo) / (S0.hi - S0.lo) * (W - 12); el("line", { x1: x, x2: x, y1: 20, y2: 25, stroke: css("--fg") }, svg); lbl(svg, x, 37, (t > 0 && S.mode === "d" ? "+" : "") + t, "lab s", "middle"); }
+  lbl(svg, W - 2, 16, S0.unit, "lab s m", "start");
+  document.getElementById("legTitle").textContent = S0.title;
+  document.getElementById("legNote").textContent = S0.note;
+}
+
+/* outlines, plates, contour, points */
+async function loadLines() {
+  const [w, b] = await Promise.all([fetch("data/world.json").then(r => r.json()), fetch("data/boundaries.json").then(r => r.json())]);
+  const st = () => ({ color: isDark() ? "#EFEAF0" : "#2A2430", weight: .7, opacity: .7, renderer: lineRenderer, interactive: false });
+  outlineL.clearLayers(); for (const ring of w.rings) L.polyline(ring.map(p => [p[1], p[0]]), st()).addTo(outlineL);
+  plateL.clearLayers();
+  for (const ln of b.lines) {
+    const segs = [[]]; ln.c.forEach((p, i) => { if (i && Math.abs(p[0] - ln.c[i - 1][0]) > 180) segs.push([]); segs[segs.length - 1].push([p[1], p[0]]); });
+    for (const s of segs) if (s.length > 1) L.polyline(s, { color: "#E8590C", weight: ln.t === "s" ? 2.4 : 1.6, opacity: .9, dashArray: ln.t === "s" ? null : "5 3", renderer: lineRenderer, interactive: false }).addTo(plateL);
+  }
+  applyLayers(); applyOverlays();
+}
+function contour() {
+  // 200 km contour of the current thickness model, from a 1 degree resample (marching squares, line segments)
+  contL.clearLayers(); if (!S.cont || !G || !["a", "l", "w"].includes(S.mode)) return;
+  const step = 4, nx = NX / step, ny = NY / step, v = new Float32Array(nx * ny);
+  for (let y = 0; y < ny; y++) for (let x = 0; x < nx; x++) { let s = 0; for (let a = 0; a < step; a++) for (let b = 0; b < step; b++) s += valOf(S.mode, (y * step + a) * NX + x * step + b); v[y * nx + x] = s / step / step; }
+  const T = 200, ll = (x, y) => [90 - (y + .5) * step * RES, -180 + (x + .5) * step * RES], segs = [];
+  for (let y = 0; y < ny - 1; y++) for (let x = 0; x < nx - 1; x++) {
+    const a = v[y * nx + x], b = v[y * nx + x + 1], c = v[(y + 1) * nx + x + 1], d = v[(y + 1) * nx + x];
+    const pts = []; const e = (p, q, P, Q) => { if ((p >= T) !== (q >= T)) { const t = (T - p) / (q - p); pts.push([P[0] + (Q[0] - P[0]) * t, P[1] + (Q[1] - P[1]) * t]); } };
+    const A = ll(x, y), B = ll(x + 1, y), C = ll(x + 1, y + 1), D = ll(x, y + 1);
+    e(a, b, A, B); e(b, c, B, C); e(c, d, C, D); e(d, a, D, A);
+    if (pts.length >= 2) segs.push([pts[0], pts[1]]); if (pts.length === 4) segs.push([pts[2], pts[3]]);
+  }
+  L.polyline(segs, { color: isDark() ? "#fff" : "#1F1A26", weight: 2, opacity: .95, renderer: lineRenderer, interactive: false }).addTo(contL);
+}
+function applyOverlays() {
+  S.plates ? plateL.addTo(lmap) : lmap.removeLayer(plateL);
+  S.volc ? volcL.addTo(lmap) : lmap.removeLayer(volcL);
+  S.diam ? diamL.addTo(lmap) : lmap.removeLayer(diamL);
+  contour(); S.cont ? contL.addTo(lmap) : lmap.removeLayer(contL);
+}
+function buildPoints() {
+  volcL.clearLayers(); diamL.clearLayers();
+  const pr = L.canvas({ padding: .3 });
+  for (const v of PTS.volcanoes) L.circleMarker([v[1], v[2]], { radius: 3.2, color: "#fff", weight: .8, fillColor: "#C92A2A", fillOpacity: .95, renderer: pr }).on("click", e => { L.DomEvent.stop(e); pickPoint(v[1], v[2], v[0] + " (volcano)"); }).addTo(volcL);
+  for (const v of PTS.diamonds) L.marker([v[1], v[2]], { icon: L.divIcon({ className: "", html: '<svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 1 L13 7 L7 13 L1 7 Z" fill="#1C7ED6" stroke="#fff" stroke-width="1.4"/></svg>', iconSize: [14, 14], iconAnchor: [7, 7] }), title: v[0] }).on("click", e => { L.DomEvent.stop(e); pickPoint(v[1], v[2], v[0] + " (diamond mine)"); }).addTo(diamL);
+}
+document.querySelectorAll("#modeSeg .btn").forEach(b => b.onclick = () => { S.mode = b.dataset.m; document.querySelectorAll("#modeSeg .btn").forEach(x => x.setAttribute("aria-pressed", x === b)); render(); applyOverlays(); });
+const tg = (id, key) => { const b = document.getElementById(id); b.onclick = () => { S[key] = !S[key]; b.setAttribute("aria-pressed", S[key]); if (key === "cont" && S[key] && !["a", "l", "w"].includes(S.mode)) { S.mode = "a"; document.querySelectorAll("#modeSeg .btn").forEach(x => x.setAttribute("aria-pressed", x.dataset.m === "a")); render(); } applyOverlays(); }; };
+tg("tgPlates", "plates"); tg("tgVolc", "volc"); tg("tgDiam", "diam"); tg("tgCont", "cont");
+
+/* coordinates readout so you always know where you are */
+const coord = document.getElementById("coord");
+lmap.on("mousemove", e => { if (!G) return; const { lat, lng } = e.latlng; if (lat > 84 || lat < -80) { coord.hidden = true; return; } const lo = ((lng + 540) % 360) - 180; const i = idx(lat, lo); const c = G.ctry[i] >= 0 ? PTS.countries[G.ctry[i]] : (Number.isNaN(G.age[i]) ? "" : "ocean"); coord.hidden = false; const v = valAt(lat, lo); coord.textContent = `${Math.abs(lat).toFixed(1)}°${lat >= 0 ? "N" : "S"} ${Math.abs(lo).toFixed(1)}°${lo >= 0 ? "E" : "W"}${c ? " · " + c : ""}${Number.isNaN(v) ? "" : " · " + (S.mode === "d" && v > 0 ? "+" : "") + fmt(v) + " " + SCALE[S.mode].unit}`; });
+lmap.on("mouseout", () => coord.hidden = true);
+function valAt(lat, lon) { const l = bil(G.l, lat, lon), w = bil(G.w, lat, lon); return S.mode === "a" ? (l + w) / 2 : S.mode === "l" ? l : S.mode === "w" ? w : S.mode === "d" ? w - l : S.mode === "age" ? G.age[idx(lat, lon)] : bil(G.crust, lat, lon); }
+
+/* == the info panel == */
+let marker = null;
+function nearestCity(lat, lon) {
+  let best = null, bd = 1e9; const cl = Math.cos(lat * Math.PI / 180);
+  for (const c of PTS.cities) { const dx = (c[3] - lon) * cl, dy = c[2] - lat, d = dx * dx + dy * dy; if (d < bd) { bd = d; best = c; } }
+  const R0 = 6371, p1 = lat * Math.PI / 180, p2 = best[2] * Math.PI / 180, dl = (best[3] - lon) * Math.PI / 180;
+  const km = 2 * R0 * Math.asin(Math.sqrt(Math.sin((p2 - p1) / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2));
+  return { c: best, km };
+}
+function shareThinner(v, key) { const X = PTS.cdf.x, C = PTS.cdf[key]; const i = Math.min(X.length - 1, Math.max(0, Math.round(v / 2))); return C[i]; }
+function pickPoint(lat, lon, name, fly) {
+  lon = ((lon + 540) % 360) - 180;
+  S.place = { lat, lon, name }; if (marker) lmap.removeLayer(marker);
+  marker = L.marker([lat, lon], { icon: L.divIcon({ className: "", html: '<div class="pin"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }), keyboard: false }).addTo(lmap);
+  if (fly) lmap.flyTo([lat, lon], Math.max(lmap.getZoom(), 4.5), { duration: .8 });
+  drawInfo();
+}
+function drawInfo() {
+  const p = S.place, box = document.getElementById("info"); if (!p || !G) return;
+  const l = bil(G.l, p.lat, p.lon), w = bil(G.w, p.lat, p.lon), a = (l + w) / 2, cr = bil(G.crust, p.lat, p.lon), i = idx(p.lat, p.lon), age = G.age[i];
+  const nc = nearestCity(p.lat, p.lon), cty = G.ctry[i] >= 0 ? PTS.countries[G.ctry[i]] : null, pl = G.plate[i] >= 0 ? PTS.plates[G.plate[i]] : null;
+  const where = p.name || (nc.km < 60 ? `Near ${nc.c[0]}` : `${fmt(nc.km)} km from ${nc.c[0]}`);
+  const sh = shareThinner(a, "a");
+  box.innerHTML = `<p class="where">${esc(where)}</p><p class="src" style="margin:0">${Math.abs(p.lat).toFixed(2)}°${p.lat >= 0 ? "N" : "S"}, ${Math.abs(p.lon).toFixed(2)}°${p.lon >= 0 ? "E" : "W"}${cty ? " · " + esc(cty) : ""}</p>
+  <div class="big">${fmt(a)} km <small>down</small></div><p class="src" style="margin:0">to the base of the lithosphere (average). Thicker than ${pc(sh)} of the Earth's surface.</p>
+  <div class="row2"><dl><dt>LithoRef18</dt><dd>${fmt(l)} km</dd><dt>WINTERC-G</dt><dd>${fmt(w)} km</dd><dt>Crust</dt><dd>${fmt(cr)} km</dd><dt>Mantle part</dt><dd>${fmt(Math.max(0, a - cr))} km</dd>
+  <dt>Sea floor</dt><dd>${Number.isNaN(age) ? "none (continental)" : fmt(age) + " million years old"}</dd><dt>Plate</dt><dd>${pl ? esc(pl) : "n/a"}</dd><dt>Nearest city</dt><dd>${esc(nc.c[0])}, ${fmt(nc.km)} km</dd></dl><div class="col" id="colSvg"></div></div>`;
+  column(document.getElementById("colSvg"), l, w, cr);
+}
+function column(host, l, w, cr) {
+  const H = 170, W = 84, k = (H - 18) / 300, svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: "img", "aria-label": "Cross-section of the ground" }, host);
+  const P = PAL.acton, x0 = 30, cw = 30, a = (l + w) / 2;
+  el("rect", { x: x0, y: 6, width: cw, height: H - 18, fill: `rgb(${P[59].join(",")})` }, svg);
+  el("rect", { x: x0, y: 6, width: cw, height: a * k, fill: `rgb(${P[15].join(",")})` }, svg);
+  el("rect", { x: x0, y: 6, width: cw, height: cr * k, fill: "#D9B88A" }, svg);
+  for (const [v, c] of [[l, css("--hot")], [w, css("--cool")]]) el("line", { x1: x0 - 4, x2: x0 + cw + 4, y1: 6 + v * k, y2: 6 + v * k, stroke: c, "stroke-width": 2 }, svg);
+  for (const t of [0, 100, 200, 300]) { el("line", { x1: x0 - 3, x2: x0, y1: 6 + t * k, y2: 6 + t * k, stroke: css("--muted") }, svg); lbl(svg, x0 - 5, 10 + t * k, t, "lab s m", "end"); }
+  lbl(svg, x0 + cw + 3, H - 1, "km", "lab s m", "start");
+}
+lmap.on("click", e => pickPoint(e.latlng.lat, e.latlng.lng, null));
+
+/* search */
+const q = document.getElementById("q"), sug = document.getElementById("sug"); let hits = [], sel = -1;
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+q.addEventListener("input", () => {
+  const t = norm(q.value.trim()); sug.innerHTML = ""; sel = -1; if (!PTS || t.length < 2) { sug.style.display = "none"; return; }
+  hits = PTS.cities.filter(c => norm(c[0]).startsWith(t)).slice(0, 12); if (hits.length < 12) hits = hits.concat(PTS.cities.filter(c => !norm(c[0]).startsWith(t) && norm(c[0]).includes(t)).slice(0, 12 - hits.length));
+  hits.forEach((c, i) => { const li = document.createElement("li"); li.setAttribute("role", "option"); li.innerHTML = `${esc(c[0])} <span>${esc(PTS.cc[c[1]] || c[1])}</span>`; li.onclick = () => choose(i); sug.appendChild(li); });
+  sug.style.display = hits.length ? "block" : "none";
+});
+q.addEventListener("keydown", e => { if (!hits.length) return; if (e.key === "ArrowDown") { sel = Math.min(hits.length - 1, sel + 1); } else if (e.key === "ArrowUp") { sel = Math.max(0, sel - 1); } else if (e.key === "Enter") { choose(Math.max(0, sel)); return; } else return; e.preventDefault(); [...sug.children].forEach((li, i) => li.setAttribute("aria-selected", i === sel)); });
+document.addEventListener("click", e => { if (!e.target.closest(".searchbox")) sug.style.display = "none"; });
+function toMap() { if (small()) document.getElementById("lmap").scrollIntoView({ behavior: "smooth", block: "start" }); }
+function choose(i) { const c = hits[i]; sug.style.display = "none"; q.value = c[0]; q.blur(); pickPoint(c[2], c[3], `${c[0]}, ${PTS.cc[c[1]] || c[1]}`, true); toMap(); }
+function goTo(lat, lon, name, z) { document.getElementById("lmap").scrollIntoView({ behavior: "smooth", block: small() ? "start" : "center" }); setTimeout(() => { lmap.flyTo([lat, lon], z || 4, { duration: .8 }); pickPoint(lat, lon, name); }, 300); }
+
+/* == charts == */
+function cratonCards() {
+  const box = document.getElementById("cratonCards"); const list = R.cratons.concat(R.contrasts);
+  for (const s of list) {
+    const d = document.createElement("div"); d.className = "card"; d.tabIndex = 0; const thin = s.a < 120; if (thin) d.style.borderLeftColor = "var(--hot)";
+    d.innerHTML = `<b>${esc(s.name)}</b>${esc(s.where)}<div class="big">${fmt(s.a)} km <span>average</span></div>LithoRef18 ${fmt(s.l)} km · WINTERC-G ${fmt(s.w)} km`;
+    d.onclick = () => goTo(s.lat, s.lon, s.name, 4); d.onkeydown = e => { if (e.key === "Enter") d.onclick(); };
+    box.appendChild(d);
+  }
+}
+function ageChart() {
+  resp(document.getElementById("ageChart"), (W, narrow) => {
+    const H = narrow ? 300 : 340, m = { l: 46, r: 14, t: 12, b: 42 }, svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, document.getElementById("ageChart"));
+    const X = a => m.l + a / 200 * (W - m.l - m.r), Y = v => H - m.b - v / 160 * (H - m.t - m.b);
+    for (let v = 0; v <= 160; v += 40) { el("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), stroke: css("--rule") }, svg); lbl(svg, m.l - 6, Y(v) + 4, v, "lab m", "end"); }
+    for (let a = 0; a <= 200; a += 50) lbl(svg, X(a), H - m.b + 18, a, "lab m", "middle");
+    lbl(svg, (m.l + W - m.r) / 2, H - 6, "age of the sea floor, million years", "lab m", "middle");
+    const yl = lbl(svg, 12, (m.t + H - m.b) / 2, "km to the base", "lab m", "middle"); yl.setAttribute("transform", `rotate(-90 12 ${(m.t + H - m.b) / 2})`);
+    const A = R.ocean_age, mid = r => (r.age_from + r.age_to) / 2;
+    for (const [k, c] of [["lithoref18", css("--hot")], ["winterc", css("--cool")]]) {
+      let band = A.map(r => `${X(mid(r))},${Y(r[k + "_p75"])}`).join(" ") + " " + A.slice().reverse().map(r => `${X(mid(r))},${Y(r[k + "_p25"])}`).join(" ");
+      el("polygon", { points: band, fill: c, opacity: .16 }, svg);
+      el("polyline", { points: A.map(r => `${X(mid(r))},${Y(r[k + "_median"])}`).join(" "), fill: "none", stroke: c, "stroke-width": 2.6 }, svg);
+      A.forEach(r => { const dot = el("circle", { cx: X(mid(r)), cy: Y(r[k + "_median"]), r: 4, fill: c }, svg); dot.addEventListener("mousemove", e => showTip(`<b>${r.age_from} to ${r.age_to} Myr</b><br>${k === "winterc" ? "WINTERC-G" : "LithoRef18"}: ${fmt(r[k + "_median"])} km (middle half ${fmt(r[k + "_p25"])} to ${fmt(r[k + "_p75"])})`, e.pageX - scrollX, e.pageY - scrollY)); dot.addEventListener("mouseleave", hideTip); });
+    }
+    let hs = ""; for (let a = 0; a <= 200; a += 1) { const v = R.ocean_fit.halfspace_c * Math.sqrt(a); if (v > 160) break; hs += `${X(a)},${Y(v)} `; }
+    el("polyline", { points: hs, fill: "none", stroke: css("--muted"), "stroke-width": 1.6, "stroke-dasharray": "5 4" }, svg);
+  });
+}
+function distChart() {
+  resp(document.getElementById("distChart"), (W, narrow) => {
+    // continental area histogram from the grids (average of the models), volcanoes and diamond mines from the point lists
+    const bins = 15, bw = 20, cont = new Float64Array(bins); let ct = 0;
+    if (G) for (let r = 0; r < NY; r++) { const wt = Math.cos((90 - (r + .5) * RES) * Math.PI / 180); for (let x = 0; x < NX; x++) { const i = r * NX + x; if (!Number.isNaN(G.age[i])) continue; const v = (G.l[i] + G.w[i]) / 2; cont[Math.min(bins - 1, Math.floor(v / bw))] += wt; ct += wt; } }
+    const hist = arr => { const h = new Float64Array(bins); arr.forEach(v => h[Math.min(bins - 1, Math.floor(v[3] / bw))]++); return Array.from(h, x => x / arr.length); };
+    const rows = [["Continental ground", Array.from(cont, x => x / ct), css("--deep")], [`Volcanoes (${fmt(PTS.volcanoes.length)})`, hist(PTS.volcanoes), "#C92A2A"], [`Diamond mines (${fmt(PTS.diamonds.length)})`, hist(PTS.diamonds), "#1C7ED6"]];
+    const rh = narrow ? 92 : 100, m = { l: 10, r: 10, t: 6, b: 40 }, H = m.t + rows.length * rh + m.b, svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, document.getElementById("distChart"));
+    const X = v => m.l + v / 300 * (W - m.l - m.r);
+    rows.forEach(([name, h, c], k) => {
+      const y0 = m.t + k * rh, mx = Math.max(...h);
+      lbl(svg, m.l, y0 + 14, name, "lab b", "start");
+      h.forEach((s, i) => { const bh = s / mx * (rh - 30); const r = el("rect", { x: X(i * bw) + 1, y: y0 + rh - 8 - bh, width: X(bw) - X(0) - 2, height: bh, fill: c, opacity: .85 }, svg); r.addEventListener("mousemove", e => showTip(`<b>${name}</b><br>${i * bw} to ${(i + 1) * bw} km: ${pc(s)}`, e.pageX - scrollX, e.pageY - scrollY)); r.addEventListener("mouseleave", hideTip); });
+      el("line", { x1: m.l, x2: W - m.r, y1: y0 + rh - 8, y2: y0 + rh - 8, stroke: css("--rule") }, svg);
+    });
+    for (let v = 0; v <= 300; v += 50) lbl(svg, X(v), H - m.b + 18, v, "lab m", "middle");
+    lbl(svg, (m.l + W - m.r) / 2, H - 4, "km to the base of the lithosphere (average of the two models)", "lab m", "middle");
+  });
+}
+function ukChart() {
+  resp(document.getElementById("ukChart"), (W, narrow) => {
+    const P = R.uk_places.slice().sort((a, b) => b.a - a.a), rh = 24, m = { l: narrow ? 92 : 110, r: 16, t: 8, b: 40 }, H = m.t + P.length * rh + m.b;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, document.getElementById("ukChart")), X = v => m.l + v / 250 * (W - m.l - m.r);
+    el("rect", { x: X(wq(.25)), y: m.t, width: X(wq(.75)) - X(wq(.25)), height: P.length * rh, fill: css("--deep"), opacity: .09 }, svg);
+    for (let v = 0; v <= 250; v += 50) { el("line", { x1: X(v), x2: X(v), y1: m.t, y2: m.t + P.length * rh, stroke: css("--rule") }, svg); lbl(svg, X(v), H - m.b + 16, v, "lab m", "middle"); }
+    lbl(svg, (m.l + W - m.r) / 2, H - 4, "km to the base of the lithosphere", "lab m", "middle");
+    P.forEach((p, i) => {
+      const y = m.t + i * rh + rh / 2; lbl(svg, m.l - 8, y + 4, p.name, "lab", "end");
+      el("line", { x1: X(p.l), x2: X(p.w), y1: y, y2: y, stroke: css("--muted"), "stroke-width": 1.4 }, svg);
+      el("circle", { cx: X(p.l), cy: y, r: 5, fill: css("--hot") }, svg); el("circle", { cx: X(p.w), cy: y, r: 5, fill: css("--cool") }, svg);
+      const hit = el("rect", { x: 0, y: y - rh / 2, width: W, height: rh, fill: "transparent", style: "cursor:pointer" }, svg);
+      hit.addEventListener("mousemove", e => showTip(`<b>${esc(p.name)}</b><br>LithoRef18 ${fmt(p.l)} km · WINTERC-G ${fmt(p.w)} km<br>crust ${fmt(p.crust)} km`, e.pageX - scrollX, e.pageY - scrollY)); hit.addEventListener("mouseleave", hideTip);
+      hit.addEventListener("click", () => goTo(p.lat, p.lon, p.name, 6));
+    });
+  });
+}
+function wq(q) { return q === .25 ? R.models.average.continent.p25 : R.models.average.continent.p75; }
+let rankKey = "thick";
+function drawRank() {
+  const t = document.getElementById("rank"), all = R.countries.all;
+  let rows = rankKey === "thick" ? all.slice(0, 15) : rankKey === "thin" ? all.slice().reverse().slice(0, 15) : all;
+  const uk = all.find(r => r.iso === "GBR"); if (!rows.includes(uk)) rows = rows.concat([uk]);
+  const sw = v => `rgb(${colourOf("a", v).join(",")})`;
+  t.innerHTML = `<thead><tr><th>#</th><th>Country</th><th class="num">Average</th><th class="num wide">LithoRef18</th><th class="num wide">WINTERC-G</th></tr></thead><tbody>` +
+    rows.map(r => `<tr class="go${r.iso === "GBR" ? " me" : ""}" data-iso="${r.iso}"><td>${all.indexOf(r) + 1}</td><td><i class="sw" style="background:${sw(r.a)}"></i>${esc(r.country)}</td><td class="num"><b>${r.a}</b> km</td><td class="num wide">${r.l}</td><td class="num wide">${r.w}</td></tr>`).join("") + "</tbody>";
+  t.querySelectorAll("tr.go").forEach(tr => tr.onclick = () => { const i = PTS.countries.indexOf(all.find(r => r.iso === tr.dataset.iso).country); focusCountry(i, tr.dataset.iso); });
+}
+function focusCountry(i, iso) {
+  if (!G || i < 0) return; let n = 0, la = 0, lo = 0, mnla = 90, mxla = -90, mnlo = 180, mxlo = -180;
+  for (let k = 0; k < G.ctry.length; k++) if (G.ctry[k] === i) { const lat = 90 - (Math.floor(k / NX) + .5) * RES, lon = -180 + (k % NX + .5) * RES; n++; la += lat; lo += lon; mnla = Math.min(mnla, lat); mxla = Math.max(mxla, lat); mnlo = Math.min(mnlo, lon); mxlo = Math.max(mxlo, lon); }
+  if (!n) return; document.getElementById("lmap").scrollIntoView({ behavior: "smooth", block: small() ? "start" : "center" });
+  setTimeout(() => { if (mxlo - mnlo < 180) lmap.flyToBounds([[mnla, mnlo], [mxla, mxlo]], { padding: [30, 30], duration: .8 }); pickPoint(la / n, lo / n, PTS.countries[i] + " (centre)"); }, 300);
+}
+document.querySelectorAll("#rankSeg .btn").forEach(b => b.onclick = () => { rankKey = b.dataset.k; document.querySelectorAll("#rankSeg .btn").forEach(x => x.setAttribute("aria-pressed", x === b)); drawRank(); });
+function agreeChart() {
+  resp(document.getElementById("agreeChart"), (W, narrow) => {
+    const S0 = Math.min(W, 420), m = { l: 46, r: 10, t: 8, b: 40 }, H = S0, svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, document.getElementById("agreeChart"));
+    const side = S0 - m.l - m.r - (S0 - m.t - m.b > 0 ? 0 : 0), sz = Math.min(W - m.l - m.r, H - m.t - m.b), X = v => m.l + v / 300 * sz, Y = v => m.t + sz - v / 300 * sz;
+    const nb = 30, h = new Float64Array(nb * nb); let tot = 0;
+    for (let r = 0; r < NY; r++) { const wt = Math.cos((90 - (r + .5) * RES) * Math.PI / 180); for (let x = 0; x < NX; x++) { const i = r * NX + x; const a = Math.min(nb - 1, Math.floor(G.l[i] / 10)), b = Math.min(nb - 1, Math.floor(G.w[i] / 10)); h[a * nb + b] += wt; tot += wt; } }
+    const mx = Math.max(...h) / tot;
+    for (let a = 0; a < nb; a++) for (let b = 0; b < nb; b++) { const s = h[a * nb + b] / tot; if (!s) continue; const t = Math.pow(s / mx, .45); const c = PAL.acton[Math.round((1 - t) * 57)]; const r = el("rect", { x: X(a * 10), y: Y((b + 1) * 10), width: sz / nb + .4, height: sz / nb + .4, fill: `rgb(${c.join(",")})` }, svg); r.addEventListener("mousemove", e => showTip(`LithoRef18 ${a * 10} to ${a * 10 + 10} km<br>WINTERC-G ${b * 10} to ${b * 10 + 10} km<br><b>${pc(s, 2)}</b> of the surface`, e.pageX - scrollX, e.pageY - scrollY)); r.addEventListener("mouseleave", hideTip); }
+    el("line", { x1: X(0), y1: Y(0), x2: X(300), y2: Y(300), stroke: css("--fg"), "stroke-dasharray": "4 4", opacity: .6 }, svg);
+    for (let v = 0; v <= 300; v += 100) { lbl(svg, X(v), m.t + sz + 16, v, "lab m", "middle"); lbl(svg, m.l - 6, Y(v) + 4, v, "lab m", "end"); }
+    lbl(svg, m.l + sz / 2, m.t + sz + 34, "LithoRef18, km", "lab m", "middle");
+    const yl = lbl(svg, 12, m.t + sz / 2, "WINTERC-G, km", "lab m", "middle"); yl.setAttribute("transform", `rotate(-90 12 ${m.t + sz / 2})`);
+    svg.setAttribute("viewBox", `0 0 ${W} ${m.t + sz + m.b}`);
+  });
+}
+
+/* theme */
+document.getElementById("theme").onclick = () => { const r = document.documentElement; r.dataset.theme = isDark() ? "light" : "dark"; setTiles(); render(); loadLines(); redraws.forEach(f => f()); };
+
+(async function () {
+  try {
+    const [p] = await Promise.all([fetch("data/points.json").then(r => r.json()), loadGrids()]);
+    PTS = p;
+  } catch (e) { document.getElementById("loading").textContent = "Could not load the model grids."; return; }
+  document.getElementById("loading").remove();
+  render(); buildPoints(); loadLines(); cityNames();
+  cratonCards(); ageChart(); distChart(); ukChart(); drawRank(); agreeChart();
+  const u = R.uk_places.find(x => x.name === "Preston"); pickPoint(u.lat, u.lon, "Preston, Lancashire");
+})();
+</script>
+<!--FULLSCREEN-->
+</body>
+</html>
